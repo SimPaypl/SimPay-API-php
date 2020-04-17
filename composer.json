@@ -1,0 +1,22 @@
+{
+    "name": "kgrzelak/simpay",
+    "description": "Simpay",
+	"type": "library",
+	"version": "1.1",
+	"license": "MIT",
+    "require": {
+        "php": ">=7.0",
+		"guzzlehttp/guzzle": "~6.0"
+    },
+    "authors": [
+        {
+            "name": "Krzysztof Grzelak",
+            "email": "k.grzelak@systemy.net"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "simpay\\": "src"
+        }
+	}
+}
