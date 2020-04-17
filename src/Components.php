@@ -55,11 +55,7 @@ class Components {
 	}
 	
 	public function checkIp($ip) {
-		if (in_array($ip, $this->getIp()->respond->ips)) {
-			return true;
-		} else {
-			return false;
-		}
+		return in_array($ip, $this->getIp()->respond->ips);
 	}
 	
 }
