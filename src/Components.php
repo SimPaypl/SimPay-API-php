@@ -1,5 +1,4 @@
 <?php
-
 namespace simpay;
 
 use GuzzleHttp\Client;
@@ -16,16 +15,16 @@ class Components {
 	}
 	
     public function request($data, $url, $type = "params") {
-		
+
 		if ($type == "params") {
-		
+
 			$response = $this->client->request('POST', $url, [
 				'form_params' => $data,
 				'allow_redirects' => false,
 				'connect_timeout' => 4,
 				'verify' => false
 			]);
-		
+
 		} else {
 
 			$response = $this->client->request('POST', $url, [
@@ -57,5 +56,5 @@ class Components {
 	public function checkIp($ip) {
 		return in_array($ip, $this->getIp()->respond->ips);
 	}
-	
+
 }
