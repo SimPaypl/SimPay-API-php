@@ -25,7 +25,7 @@ The SimPay_PHP_SMS_Client can be installed using [Composer](https://packagist.or
 ### Composer
 
 #### Automatic install
-```composer require simpaypl/sms_xml_api```
+```composer require simpaypl/simpay```
 
 #### Manual install
 Inside of `composer.json` specify the following:
@@ -33,7 +33,7 @@ Inside of `composer.json` specify the following:
 ``` json
 {
   "require": {
-    "simpaypl/sms_xml_api": "dev-master"
+    "simpaypl/simpay": "dev-master"
   }
 }
 ```
