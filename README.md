@@ -15,6 +15,9 @@ Płatności SMS obsługiwane przez SimPay
 
 [Przykłady Implementacji](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/sms)
 
+## Dokumentacja
+[Dokumentacji API](https://docs.simpay.pl/#wstep)
+
 ## Requirements
 * PHP 7.0+
 
