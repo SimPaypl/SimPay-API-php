@@ -1,13 +1,13 @@
 {
-    "name": "kgrzelak/simpay",
-    "description": "Simpay",
-	"type": "library",
-	"version": "1.1",
-	"license": "MIT",
-	"minimum-stability": "stable",
+    "name": "simpaypl/simpay",
+    "description": "Official SimPay API",
+    "type": "library",
+    "version": "1.0",
+    "license": "MIT",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=7.0",
-		"guzzlehttp/guzzle": "~6.0"
+    	"guzzlehttp/guzzle": "~6.0"
     },
     "authors": [
         {
@@ -16,8 +16,8 @@
         }
     ],
     "autoload": {
-        "psr-4": {
+        "psr-0": {
             "simpay\\": "src"
         }
-	}
+    }
 }
