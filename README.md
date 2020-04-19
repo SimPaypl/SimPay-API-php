@@ -8,15 +8,15 @@ Partner przygotowuje link URL zgodnie z opisaną specyfikacją SimPay. W momenci
 ## Direct Billing
 Płatności Direct Billing
 
-[Przykłady](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/directbilling)
+[Przykłady Implementacji](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/directbilling)
 
 ## SMS
 Płatności SMS obsługiwane przez SimPay
 
-[Przykłady](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/sms)
+[Przykłady Implementacji](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/sms)
 
 ## Requirements
-* PHP 5.3+
+* PHP 7.0+
 
 ## Installation
 
