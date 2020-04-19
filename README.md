@@ -2,10 +2,12 @@
 
 ## SMS XML
 Partner przygotowuje link URL zgodnie z opisaną specyfikacją SimPay. W momencie złożenia przez użytkownika zamówienia (wysłanie wiadomości SMS), nasz system odpytuje URL podany przez partnera oraz pobiera kod bezpośrednio.
+
 [Przykłady Implementacji](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/smsXml)
 
 ## Direct Billing
 Płatności Direct Billing
+
 [Przykłady](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/directbilling)
 
 ## SMS
