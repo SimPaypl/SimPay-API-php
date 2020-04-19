@@ -30,11 +30,7 @@ function checkIp($ip)
     $response = json_decode(curl_exec($curl));
     curl_close($curl);
 
-    if (in_array($ip, $response->respond->ips)) {
-        return true;
-    } else {
-        return false;
-    }
+    return in_array($ip, $response->respond->ips);
 }
 
 if (!checkIp(getRemoteAddr())) {
