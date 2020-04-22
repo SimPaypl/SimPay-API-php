@@ -282,7 +282,7 @@ class Directbilling extends Components {
 		return $this->response;
 	}
 	
-	public function getTransaction(int $id) {
+	public function getTransaction(string $id) {
 		$this->response = $this->url('db_status', ['id' => $id]);
 		return $this->response;
 	}
