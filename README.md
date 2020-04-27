@@ -23,7 +23,7 @@ Płatności SMS obsługiwane przez SimPay
 
 ## Installation
 
-The SimPay_PHP_SMS_Client can be installed using [Composer](https://packagist.org/packages/simpaypl/sms_xml_api).
+The SimPay_PHP_SMS_Client can be installed using [Composer](https://packagist.org/packages/simpaypl/simpay).
 
 ### Composer
 
