@@ -36,6 +36,11 @@ class Directbilling extends Components
         $this->components = new Components();
     }
 
+    public function setApiKey($serviceApi)
+    {
+        $this->serviceApi = $serviceApi;
+    }
+
     public function setDebugMode($value)
     {
         $this->debugMode = (boolean)$value;
