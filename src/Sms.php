@@ -104,7 +104,7 @@ class Sms extends Components
     {
         if (isset($this->response) && is_object($this->response)) {
             if (isset($this->response->respond->from)) {
-                return $this->response->respond->from;
+                return strval($this->response->respond->from);
             } elseif (isset($this->response->error) && is_object($this->response->error)) {
                 return false;
             }
