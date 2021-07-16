@@ -72,7 +72,7 @@ if ($json->status != "ORDER_PAYED") {
     exit('OK');
 }
 
-if ($json->sign != hash('sha256', $json->id . $json->status . $json->valuenet_netto . $json->valuepartner . $json->control . $cfg['apiKey'])) {
+if ($json->sign != hash('sha256', $json->id . $json->status . $json->valuenet . $json->valuepartner . $json->control . $cfg['apiKey'])) {
     exit('OK');
 }
 
