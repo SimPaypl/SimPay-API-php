@@ -1,25 +1,11 @@
 # SimPay-API-php
+Oficjalny klient do wszystkich API SimPay
 
-## SMS XML
-Partner przygotowuje link URL zgodnie z opisaną specyfikacją SimPay. W momencie złożenia przez użytkownika zamówienia (wysłanie wiadomości SMS), nasz system odpytuje URL podany przez partnera oraz pobiera kod bezpośrednio.
-
-[Przykłady Implementacji](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/smsXml)
-
-## Direct Billing
-Płatności Direct Billing
-
-[Przykłady Implementacji](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/directbilling)
-
-## SMS
-Płatności SMS obsługiwane przez SimPay
-
-[Przykłady Implementacji](https://github.com/SimPaypl/SimPay-API-php/tree/master/examples/sms)
-
-## Dokumentacja
-[Dokumentacji API](https://docs.simpay.pl/#wstep)
+# Dokumentacja
+[Kliknij tutaj](https://docs.simpay.pl/php/?php#wstep)
 
 ## Requirements
-* PHP 7.0+
+* PHP 7.4+
 
 ## Installation
 
