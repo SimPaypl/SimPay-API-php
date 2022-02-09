@@ -28,6 +28,6 @@ Inside of `composer.json` specify the following:
 ```
 
 # Kontakt
-W razie jakicholwiek pytań w implementacji , problemów, próśb o dodanie funkcjonalności zachęcamy do kontaktu poprzez:
+W razie jakichkolwiek pytań podczas implementacji, problemów, próśb o dodanie funkcjonalności zachęcamy do kontaktu poprzez:
 
 <kontakt@simpay.pl>
