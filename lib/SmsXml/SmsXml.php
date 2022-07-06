@@ -9,14 +9,16 @@ class SmsXml
 
     private string $hashKey;
 
-    private bool $error;
-    private int $errorCode;
+    private bool $error = false;
+    private int $errorCode = 0;
 
-    public function __construct(string $hashKey) {
+    public function __construct(string $hashKey)
+    {
         $this->hashKey = $hashKey;
     }
 
-    public function generateCode(): string {
+    public function generateCode(): string
+    {
 
         $charset = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
         $length = 6;
@@ -29,10 +31,10 @@ class SmsXml
         }
 
         return $str;
-
     }
 
-    public function parseSMS($data) {
+    public function parseSMS($data)
+    {
 
         if (!isset($data['sms_id'])) {
             $this->setError(true, 1);
@@ -70,19 +72,21 @@ class SmsXml
         }
 
         return new SmsParse($data);
-
     }
 
-    private function setError(bool $state, int $code) {
+    private function setError(bool $state, int $code)
+    {
         $this->error = $state;
         $this->errorCode = $code;
     }
 
-    public function isError(): bool {
+    public function isError(): bool
+    {
         return $this->error;
     }
 
-    public function getErrorText(): string {
+    public function getErrorText(): string
+    {
         switch ($this->errorCode) {
             case 0:
                 return 'No Error';
@@ -97,16 +101,17 @@ class SmsXml
         return '';
     }
 
-    private function clearText($text) {
+    private function clearText($text)
+    {
         return iconv('utf-8', 'ascii//TRANSLIT', $text);
     }
 
-    public function generateXml($text): string {
+    public function generateXml($text): string
+    {
         return
             '<?xml version="1.0" encoding="UTF-8"?>
 				<sms-response>
 					<sms-text>' . $this->clearText($text) . '</sms-text>
 			</sms-response>';
     }
-
 }
