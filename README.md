@@ -65,7 +65,7 @@ Inside of `composer.json` specify the following:
 }
 ```
 
-## Kontakt
+## Contact
 If you have any questions during implementation, problems, requests to add functionality, feel free to contact us via:
 
 <kontakt@simpay.pl>
