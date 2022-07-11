@@ -15,7 +15,8 @@ class Sms
 
     private Guzzle $guzzle;
 
-    public function __construct(Guzzle $guzzle) {
+    public function __construct(Guzzle $guzzle)
+    {
         $this->guzzle = $guzzle;
     }
 

@@ -16,7 +16,8 @@ class Notification
      * @throws NotificationException
      * @throws JsonException
      */
-    public function __construct(string $hashKey, $payload = null) {
+    public function __construct(string $hashKey, $payload = null)
+    {
 
         $this->hashKey = $hashKey;
 
@@ -30,16 +31,20 @@ class Notification
      * @throws NotificationException
      * @throws JsonException
      */
-    private function validate($payload = null) {
+    private function validate($payload = null)
+    {
 
         if (!$payload) {
             throw new NotificationException('No payload found');
         }
 
-        $data = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
-        $this->data = $data;
+        try {
+            $this->data = json_decode($payload, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new NotificationException('Couldn\'t parse data');
+        }
 
-        if ($this->signature($data) !== $data['signature']) {
+        if ($this->signature($this->data) !== $this->data['signature']) {
             throw new NotificationException('Bad signature');
         }
 
@@ -48,7 +53,8 @@ class Notification
     /**
      * @throws NotificationException
      */
-    private function signature(array $data) {
+    private function signature(array $data)
+    {
 
         if (!isset($data['signature'])) {
             throw new NotificationException('Signature param not found');
@@ -90,59 +96,73 @@ class Notification
 
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->data['id'];
     }
 
-    public function getServiceId() {
+    public function getServiceId()
+    {
         return $this->data['service_id'];
     }
 
-    public function getStatus() {
+    public function getStatus()
+    {
         return $this->data['status'];
     }
 
-    public function getValueNet() {
+    public function getValueNet()
+    {
         return $this->data['values']['net'];
     }
 
-    public function getValueGross() {
+    public function getValueGross()
+    {
         return $this->data['values']['gross'];
     }
 
-    public function getValuePartner() {
+    public function getValuePartner()
+    {
         return $this->data['values']['partner'];
     }
 
-    public function getReturnSuccess() {
+    public function getReturnSuccess()
+    {
         return $this->data['returns']['complete'] ?? null;
     }
 
-    public function getReturnFailure() {
+    public function getReturnFailure()
+    {
         return $this->data['returns']['failure'] ?? null;
     }
 
-    public function getControl() {
+    public function getControl()
+    {
         return $this->data['control'] ?? null;
     }
 
-    public function getNumberFrom() {
+    public function getNumberFrom()
+    {
         return $this->data['number_from'] ?? null;
     }
 
-    public function getProvider() {
+    public function getProvider()
+    {
         return $this->data['provider'] ?? null;
     }
 
-    public function getData(): array {
+    public function getData(): array
+    {
         return $this->data;
     }
 
-    public function isPaid(): bool {
+    public function isPaid(): bool
+    {
         return $this->data['status'] === 'transaction_db_payed';
     }
 
-    public function responseOk() {
+    public function responseOk()
+    {
         http_response_code(200);
         header('Content-Type: plain/text');
         exit('OK');

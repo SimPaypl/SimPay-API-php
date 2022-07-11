@@ -20,14 +20,16 @@ class Guzzle
 
     private object $data;
 
-    public function __construct(Authorization $authorization) {
+    public function __construct(Authorization $authorization)
+    {
         $this->client = new Client([
             'base_uri' => 'https://api.simpay.pl',
             'headers' => $authorization->getHeaders()
         ]);
     }
 
-    public function request(string $method, string $uri, array $data = [], array $headers = [], bool $collect = false) {
+    public function request(string $method, string $uri, array $data = [], array $headers = [], bool $collect = false)
+    {
 
         try {
 
@@ -69,19 +71,23 @@ class Guzzle
 
     }
 
-    public function getErrorMessage(): string {
+    public function getErrorMessage(): string
+    {
         return $this->error;
     }
 
-    public function getErrorCode(): string {
+    public function getErrorCode(): string
+    {
         return $this->errorCode;
     }
 
-    public function getErrorApiMessage(): string {
+    public function getErrorApiMessage(): string
+    {
         return $this->errorApi;
     }
 
-    public function getPagination() {
+    public function getPagination()
+    {
         return $this->data->pagination;
     }
 

@@ -30,54 +30,64 @@ class Payment
 
     private string $signature;
 
-    public function __construct(Guzzle $guzzle, int $serviceId, string $hash) {
+    public function __construct(Guzzle $guzzle, int $serviceId, string $hash)
+    {
         $this->guzzle = $guzzle;
         $this->serviceId = $serviceId;
         $this->hash = $hash;
         return $this;
     }
 
-    public function setDescription(string $description): Payment {
+    public function setDescription(string $description): Payment
+    {
         $this->description = $description;
         return $this;
     }
 
-    public function setAmountType(string $amountType): Payment {
+    public function setAmountType(string $amountType): Payment
+    {
         $this->amountType = $amountType;
         return $this;
     }
 
-    public function setAmount(float $amount): Payment {
+    public function setAmount(float $amount): Payment
+    {
         $this->amount = $amount;
         return $this;
     }
 
-    public function setControl(string $control): Payment {
+    public function setControl(string $control): Payment
+    {
         $this->control = $control;
         return $this;
     }
 
-    public function setReturnSuccess(string $returnSuccess): Payment {
+    public function setReturnSuccess(string $returnSuccess): Payment
+    {
         $this->returnSuccess = $returnSuccess;
         return $this;
     }
 
-    public function setReturnFailure(string $returnFailure): Payment {
+    public function setReturnFailure(string $returnFailure): Payment
+    {
         $this->returnFailure = $returnFailure;
         return $this;
     }
 
-    public function setPhoneNumber(string $phoneNumber): Payment {
+    public function setPhoneNumber(string $phoneNumber): Payment
+    {
         $this->phoneNumber = $phoneNumber;
         return $this;
     }
 
-    public function setProvider(int $provider): Payment {
+    public function setProvider(int $provider): Payment
+    {
         $this->provider = $provider;
         return $this;
     }
 
-    public function make() {
+    public function make()
+    {
 
         $this->signature();
 
@@ -112,7 +122,7 @@ class Payment
 
         $data['signature'] = $this->signature;
 
-        if (!$response = $this->guzzle->request('POST', '/directbilling/' . $this->serviceId . '/transactions', $data)) {
+        if (!$response = $this->guzzle->request('POST', '/directbilling/'.$this->serviceId.'/transactions', $data)) {
             return false;
         }
 
@@ -120,7 +130,8 @@ class Payment
 
     }
 
-    private function signature() {
+    private function signature()
+    {
 
         $array = [];
 
@@ -153,10 +164,9 @@ class Payment
 
         $array['hashKey'] = $this->hash;
 
-        $signature = hash('sha256', implode('|', $array));
-        $this->signature = $signature;
+        $this->signature = hash('sha256', implode('|', $array));
 
-        return $signature;
+        return $this->signature;
 
     }
 

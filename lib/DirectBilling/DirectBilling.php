@@ -15,11 +15,13 @@ class DirectBilling
 
     private Guzzle $guzzle;
 
-    public function __construct(Guzzle $guzzle) {
+    public function __construct(Guzzle $guzzle)
+    {
         $this->guzzle = $guzzle;
     }
 
-    public function payment(int $serviceId, string $hashKey): Payment {
+    public function payment(int $serviceId, string $hashKey): Payment
+    {
         return new Payment($this->guzzle, $serviceId, $hashKey);
     }
 

@@ -10,7 +10,8 @@ class GenerateResponse
     public string $transactionId;
     public string $redirectUrl;
 
-    public function __construct(object $data) {
+    public function __construct(object $data)
+    {
 
         $this->data = $data;
 
@@ -19,11 +20,13 @@ class GenerateResponse
 
     }
 
-    public function getTransactionId() {
+    public function getTransactionId()
+    {
         return $this->data->transactionId;
     }
 
-    public function getRedirectUrl() {
+    public function getRedirectUrl()
+    {
         return $this->data->redirectUrl;
     }
 

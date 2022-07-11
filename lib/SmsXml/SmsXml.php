@@ -17,6 +17,9 @@ class SmsXml
         $this->hashKey = $hashKey;
     }
 
+    /**
+     * @throws \Exception
+     */
     public function generateCode(): string
     {
 
@@ -27,7 +30,7 @@ class SmsXml
         $count = strlen($charset);
 
         while ($length--) {
-            $str .= $charset[mt_rand(0, $count - 1)];
+            $str .= $charset[random_int(0, $count - 1)];
         }
 
         return $str;
@@ -66,7 +69,8 @@ class SmsXml
             return false;
         }
 
-        if (hash('sha256', $data['sms_id'] . $data['sms_text'] . $data['sms_from'] . $data['send_number'] . $data['send_time'] . $this->hashKey) != $data['sign']) {
+        if (hash('sha256',
+                $data['sms_id'].$data['sms_text'].$data['sms_from'].$data['send_number'].$data['send_time'].$this->hashKey) != $data['sign']) {
             $this->setError(true, 3);
             return false;
         }
@@ -111,7 +115,7 @@ class SmsXml
         return
             '<?xml version="1.0" encoding="UTF-8"?>
 				<sms-response>
-					<sms-text>' . $this->clearText($text) . '</sms-text>
+					<sms-text>'.$this->clearText($text).'</sms-text>
 			</sms-response>';
     }
 }

@@ -37,7 +37,8 @@ class SmsParse
         ['92555', 12.5]
     ];
 
-    public function __construct(array $data) {
+    public function __construct(array $data)
+    {
 
         $this->id = $data['sms_id'];
         $this->from = $data['sms_from'];
@@ -59,7 +60,8 @@ class SmsParse
 
     }
 
-    private function getSmsValue($number) {
+    private function getSmsValue($number)
+    {
         for ($iPosition = 0; $iPosition < count($this->arrayCodes); $iPosition++) {
             if ($this->arrayCodes[$iPosition][0] == $number) {
                 return $this->arrayCodes[$iPosition][1];
@@ -67,35 +69,43 @@ class SmsParse
         }
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getFrom() {
+    public function getFrom()
+    {
         return $this->from;
     }
 
-    public function getNumber() {
+    public function getNumber()
+    {
         return $this->number;
     }
 
-    public function getText() {
+    public function getText()
+    {
         return $this->text;
     }
 
-    public function getTime() {
+    public function getTime()
+    {
         return $this->time;
     }
 
-    public function getType(): int {
+    public function getType(): int
+    {
         return $this->smsType;
     }
 
-    public function getPieces() {
+    public function getPieces()
+    {
         return $this->pieces;
     }
 
-    public function getValue() {
+    public function getValue()
+    {
         return $this->smsValue;
     }
 
