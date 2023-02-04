@@ -1,24 +1,22 @@
-# Polski
-
-## SimPay-API-php
+# SimPay-API-php
 Oficjalny klient do wszystkich API SimPay
 
-## Dokumentacja
+# Dokumentacja
 [Kliknij tutaj](https://docs.simpay.pl/pl/php/?php#wstep)
 
-### Wymagania
+## Wymagania
 * PHP 7.4+
 
-### Instalacja
+## Instalacja
 
 SimPay API php można zainstalować za pomocą [Composer](https://packagist.org/packages/simpaypl/simpay).
 
-#### Composer
+### Composer
 
-##### Instalacja automatyczna
+#### Instalacja automatyczna
 ```composer require simpaypl/simpay```
 
-##### Instalacja ręczna
+#### Instalacja ręczna
 Wewnątrz `composer.json` dodaj następujący wpis:
 
 ``` json
@@ -29,32 +27,32 @@ Wewnątrz `composer.json` dodaj następujący wpis:
 }
 ```
 
-## Kontakt
+# Kontakt
 W razie jakichkolwiek pytań podczas implementacji, problemów, próśb o dodanie funkcjonalności zachęcamy do kontaktu poprzez:
 
 <kontakt@simpay.pl>
 
-# English
+---
 
-## SimPay-API-php
+# SimPay-API-php
 Official client for all SimPay APIs
 
-## Documentation
+# Documentation
 [Click here](https://docs.simpay.pl/en/php/?php#wstep)
 
-### Requirements
+## Requirements
 * PHP 7.4+
 
-### Installation
+## Installation
 
 The SimPay API php can be installed using [Composer](https://packagist.org/packages/simpaypl/simpay).
 
-#### Composer
+### Composer
 
-##### Automatic install
+#### Automatic install
 ```composer require simpaypl/simpay```
 
-##### Manual install
+#### Manual install
 Inside of `composer.json` specify the following:
 
 ``` json
@@ -65,7 +63,7 @@ Inside of `composer.json` specify the following:
 }
 ```
 
-## Contact
+# Contact
 If you have any questions during implementation, problems, requests to add functionality, feel free to contact us via:
 
 <kontakt@simpay.pl>
