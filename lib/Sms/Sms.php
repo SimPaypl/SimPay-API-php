@@ -10,8 +10,10 @@ use SimPay\API\Adapter\Guzzle;
 
 class Sms
 {
-
-    use ComponentsTrait, ServicesTrait, TransactionsTrait, NumbersTrait;
+    use ComponentsTrait;
+    use ServicesTrait;
+    use TransactionsTrait;
+    use NumbersTrait;
 
     private Guzzle $guzzle;
 
@@ -19,5 +21,4 @@ class Sms
     {
         $this->guzzle = $guzzle;
     }
-
 }

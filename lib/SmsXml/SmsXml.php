@@ -6,7 +6,6 @@ use SimPay\API\Components\SmsXml\SmsParse;
 
 class SmsXml
 {
-
     private string $hashKey;
 
     private bool $error = false;
@@ -22,7 +21,6 @@ class SmsXml
      */
     public function generateCode(): string
     {
-
         $charset = 'ABCDEFGHIJKLMNPQRSTUVWXYZ123456789';
         $length = 6;
 
@@ -36,49 +34,62 @@ class SmsXml
         return $str;
     }
 
+    /**
+     * @param array<string,mixed> $data
+     *
+     * @return bool|SmsParse
+     */
     public function parseSMS($data)
     {
-
         if (!isset($data['sms_id'])) {
             $this->setError(true, 1);
+
             return false;
         }
 
         if (!isset($data['sms_from'])) {
             $this->setError(true, 1);
+
             return false;
         }
 
         if (!isset($data['send_number'])) {
             $this->setError(true, 1);
+
             return false;
         }
 
         if (!isset($data['sms_text'])) {
             $this->setError(true, 1);
+
             return false;
         }
 
         if (!isset($data['send_time'])) {
             $this->setError(true, 1);
+
             return false;
         }
 
         if (!isset($data['sign'])) {
             $this->setError(true, 2);
+
             return false;
         }
 
-        if (hash('sha256',
-                $data['sms_id'].$data['sms_text'].$data['sms_from'].$data['send_number'].$data['send_time'].$this->hashKey) != $data['sign']) {
+        if (hash(
+            'sha256',
+            $data['sms_id'].$data['sms_text'].$data['sms_from'].$data['send_number'].$data['send_time'].$this->hashKey
+        ) != $data['sign']) {
             $this->setError(true, 3);
+
             return false;
         }
 
         return new SmsParse($data);
     }
 
-    private function setError(bool $state, int $code)
+    private function setError(bool $state, int $code): void
     {
         $this->error = $state;
         $this->errorCode = $code;
@@ -100,17 +111,20 @@ class SmsXml
                 return 'No Sign Param';
             case 3:
                 return 'Wrong Sign';
+            default:
+                return '';
         }
-
-        return '';
     }
 
-    private function clearText($text)
+    /**
+     * @return string|false
+     */
+    private function clearText(string $text)
     {
         return iconv('utf-8', 'ascii//TRANSLIT', $text);
     }
 
-    public function generateXml($text): string
+    public function generateXml(string $text): string
     {
         return
             '<?xml version="1.0" encoding="UTF-8"?>

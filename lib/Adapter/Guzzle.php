@@ -10,11 +10,10 @@ use SimPay\API\Authorization;
 
 class Guzzle
 {
-
     private Client $client;
 
     private string $error;
-    private string $errorCode;
+    private int $errorCode;
 
     private string $errorApi;
 
@@ -24,28 +23,30 @@ class Guzzle
     {
         $this->client = new Client([
             'base_uri' => 'https://api.simpay.pl',
-            'headers' => $authorization->getHeaders()
+            'headers' => $authorization->getHeaders(),
         ]);
     }
 
+    /**
+     * @param array<string, mixed>  $data
+     * @param array<string, string> $headers
+     *
+     * @return false|object|Collection
+     */
     public function request(string $method, string $uri, array $data = [], array $headers = [], bool $collect = false)
     {
-
         try {
-
             $response = $this->client->request($method, $uri, [
-                ($method === 'GET' ? 'query' : 'json') => $data,
+                ('GET' === $method ? 'query' : 'json') => $data,
                 'headers' => $headers,
-                'allow_redirects' => false
+                'allow_redirects' => false,
             ]);
 
             $response = $response->getBody()->getContents();
             $response = json_decode($response);
 
             $this->data = $response;
-
         } catch (ClientException $exception) {
-
             $response = $exception->getResponse()->getBody()->getContents();
             $json = json_decode($response);
 
@@ -57,18 +58,14 @@ class Guzzle
             $this->errorCode = $exception->getCode();
 
             return false;
-
         } catch (GuzzleException $exception) {
-
             $this->error = $exception->getMessage();
             $this->errorCode = $exception->getCode();
 
             return false;
-
         }
 
         return !$collect ? $response->data : new Collection($response->data);
-
     }
 
     public function getErrorMessage(): string
@@ -76,7 +73,7 @@ class Guzzle
         return $this->error;
     }
 
-    public function getErrorCode(): string
+    public function getErrorCode(): int
     {
         return $this->errorCode;
     }
@@ -86,9 +83,12 @@ class Guzzle
         return $this->errorApi;
     }
 
-    public function getPagination()
+    public function getPagination(): ?object
     {
+        if (!isset($this->data->pagination)) {
+            return null;
+        }
+
         return $this->data->pagination;
     }
-
 }

@@ -10,8 +10,10 @@ use SimPay\API\Traits\ComponentsTrait;
 
 class DirectBilling
 {
-
-    use ComponentsTrait, ServicesTrait, TransactionsTrait, CalculateTrait;
+    use ComponentsTrait;
+    use ServicesTrait;
+    use TransactionsTrait;
+    use CalculateTrait;
 
     private Guzzle $guzzle;
 
@@ -24,5 +26,4 @@ class DirectBilling
     {
         return new Payment($this->guzzle, $serviceId, $hashKey);
     }
-
 }

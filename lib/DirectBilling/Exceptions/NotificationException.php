@@ -2,4 +2,6 @@
 
 namespace SimPay\API\DirectBilling\Exceptions;
 
-class NotificationException extends DirectBillingException {}
+class NotificationException extends DirectBillingException
+{
+}

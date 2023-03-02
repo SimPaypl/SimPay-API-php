@@ -4,7 +4,6 @@ namespace SimPay\API;
 
 class Authorization
 {
-
     private string $apiKey;
     private string $apiPassword;
     private string $lang;
@@ -16,13 +15,15 @@ class Authorization
         $this->lang = $lang;
     }
 
+    /**
+     * @return array<string, string>
+     */
     public function getHeaders(): array
     {
         return [
             'X-SIM-KEY' => $this->apiKey,
             'X-SIM-PASSWORD' => $this->apiPassword,
-            'X-SIM-LANG' => $this->lang
+            'X-SIM-LANG' => $this->lang,
         ];
     }
-
 }

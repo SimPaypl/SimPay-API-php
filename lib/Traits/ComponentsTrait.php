@@ -6,7 +6,6 @@ use SimPay\API\Components\Pagination;
 
 trait ComponentsTrait
 {
-
     public function getErrorMessage(): string
     {
         return $this->guzzle->getErrorMessage();
@@ -17,20 +16,20 @@ trait ComponentsTrait
         return $this->guzzle->getErrorApiMessage();
     }
 
-    public function getErrorCode(): string
+    public function getErrorCode(): int
     {
         return $this->guzzle->getErrorCode();
     }
 
+    /**
+     * @return bool|Pagination
+     */
     public function pagination()
     {
-
         if (!$this->guzzle->getPagination()) {
             return false;
         }
 
         return new Pagination($this->guzzle->getPagination());
-
     }
-
 }

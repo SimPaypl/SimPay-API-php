@@ -4,26 +4,26 @@ namespace SimPay\API\Sms\Traits;
 
 trait NumbersTrait
 {
-
+    /**
+     * @return mixed
+     */
     public function getNumbers(int $page = 1, int $limit = 15)
     {
-
         return $this->guzzle->request('GET', '/sms/numbers', [
             'page' => $page,
-            'limit' => $limit
+            'limit' => $limit,
         ]);
-
     }
 
+    /**
+     * @return mixed
+     */
     public function getNumber(int $number, int $serviceId = null)
     {
-
         if (!$serviceId) {
             return $this->guzzle->request('GET', '/sms/numbers/'.$number);
         }
 
         return $this->guzzle->request('GET', '/sms/'.$serviceId.'/numbers/'.$number);
-
     }
-
 }

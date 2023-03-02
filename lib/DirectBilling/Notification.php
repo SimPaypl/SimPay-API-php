@@ -7,33 +7,34 @@ use SimPay\API\DirectBilling\Exceptions\NotificationException;
 
 class Notification
 {
-
     private string $hashKey;
 
+    /**
+     * @var array<string,mixed>
+     **/
     private array $data;
 
     /**
+     * @param string|null $payload
+     *
      * @throws NotificationException
      * @throws JsonException
      */
     public function __construct(string $hashKey, $payload = null)
     {
-
         $this->hashKey = $hashKey;
 
         $this->validate($payload);
-
-        return $this;
-
     }
 
     /**
+     * @param string|null $payload
+     *
      * @throws NotificationException
      * @throws JsonException
      */
-    private function validate($payload = null)
+    private function validate($payload = null): void
     {
-
         if (!$payload) {
             throw new NotificationException('No payload found');
         }
@@ -47,15 +48,15 @@ class Notification
         if ($this->signature($this->data) !== $this->data['signature']) {
             throw new NotificationException('Bad signature');
         }
-
     }
 
     /**
+     * @param array<string,mixed> $data
+     *
      * @throws NotificationException
      */
-    private function signature(array $data)
+    private function signature(array $data): string
     {
-
         if (!isset($data['signature'])) {
             throw new NotificationException('Signature param not found');
         }
@@ -93,64 +94,81 @@ class Notification
         $signature = implode('|', $array);
 
         return hash('sha256', $signature);
-
     }
 
-    public function getId()
+    public function getId(): string
     {
         return $this->data['id'];
     }
 
-    public function getServiceId()
+    public function getServiceId(): int
     {
         return $this->data['service_id'];
     }
 
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->data['status'];
     }
 
-    public function getValueNet()
+    public function getValueNet(): float
     {
         return $this->data['values']['net'];
     }
 
-    public function getValueGross()
+    public function getValueGross(): float
     {
         return $this->data['values']['gross'];
     }
 
-    public function getValuePartner()
+    public function getValuePartner(): float
     {
         return $this->data['values']['partner'];
     }
 
+    /**
+     * @return mixed
+     */
     public function getReturnSuccess()
     {
         return $this->data['returns']['complete'] ?? null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getReturnFailure()
     {
         return $this->data['returns']['failure'] ?? null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getControl()
     {
         return $this->data['control'] ?? null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getNumberFrom()
     {
         return $this->data['number_from'] ?? null;
     }
 
+    /**
+     * @return mixed
+     */
     public function getProvider()
     {
         return $this->data['provider'] ?? null;
     }
 
+    /**
+     * @return array<string,mixed>
+     */
     public function getData(): array
     {
         return $this->data;
@@ -158,14 +176,13 @@ class Notification
 
     public function isPaid(): bool
     {
-        return $this->data['status'] === 'transaction_db_payed';
+        return 'transaction_db_payed' === $this->data['status'];
     }
 
-    public function responseOk()
+    public function responseOk(): void
     {
         http_response_code(200);
         header('Content-Type: plain/text');
         exit('OK');
     }
-
 }

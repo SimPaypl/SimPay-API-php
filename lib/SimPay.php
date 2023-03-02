@@ -9,7 +9,6 @@ use SimPay\API\SmsXml\SmsXml;
 
 class SimPay
 {
-
     private Guzzle $guzzle;
 
     public function __construct(string $apiKey, string $apiPassword)
@@ -31,5 +30,4 @@ class SimPay
     {
         return new DirectBilling($this->guzzle);
     }
-
 }
