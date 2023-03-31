@@ -24,6 +24,8 @@ class Authorization
             'X-SIM-KEY' => $this->apiKey,
             'X-SIM-PASSWORD' => $this->apiPassword,
             'X-SIM-LANG' => $this->lang,
+            'X-SIM-VERSION' => '2.1.1',
+            'X-SIM-PLATFORM' => 'PHP',
         ];
     }
 }
