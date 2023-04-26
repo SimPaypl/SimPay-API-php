@@ -2,7 +2,7 @@
   "name": "simpaypl/simpay",
   "description": "Official SimPay API",
   "type": "library",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "license": "MIT",
   "minimum-stability": "stable",
   "require": {

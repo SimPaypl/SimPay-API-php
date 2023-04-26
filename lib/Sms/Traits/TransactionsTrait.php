@@ -7,7 +7,7 @@ trait TransactionsTrait
     /**
      * @return mixed
      */
-    public function getTransactions(int $serviceId, int $page = 1, int $limit = 15)
+    public function getTransactions(string $serviceId, int $page = 1, int $limit = 15)
     {
         return $this->guzzle->request('GET', '/sms/'.$serviceId.'/transactions', [
             'page' => $page,
@@ -18,7 +18,7 @@ trait TransactionsTrait
     /**
      * @return mixed
      */
-    public function getTransaction(int $serviceId, int $transactionId)
+    public function getTransaction(string $serviceId, int $transactionId)
     {
         return $this->guzzle->request('GET', '/sms/'.$serviceId.'/transactions/'.$transactionId);
     }

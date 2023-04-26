@@ -18,7 +18,7 @@ trait ServicesTrait
     /**
      * @return mixed
      */
-    public function getService(int $serviceId)
+    public function getService(string $serviceId)
     {
         return $this->guzzle->request('GET', '/directbilling/'.$serviceId);
     }

@@ -7,7 +7,7 @@ trait CalculateTrait
     /**
      * @return mixed
      */
-    public function calculate(int $serviceId, float $amount)
+    public function calculate(string $serviceId, float $amount)
     {
         return $this->guzzle->request('GET', '/directbilling/'.$serviceId.'/calculate', [
             'amount' => $amount,
