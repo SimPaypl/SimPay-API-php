@@ -22,7 +22,7 @@ class DirectBilling
         $this->guzzle = $guzzle;
     }
 
-    public function payment(int $serviceId, string $hashKey): Payment
+    public function payment(string $serviceId, string $hashKey): Payment
     {
         return new Payment($this->guzzle, $serviceId, $hashKey);
     }
