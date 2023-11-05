@@ -31,7 +31,7 @@ class Payment
 
     private string $signature;
 
-    public function __construct(Guzzle $guzzle, int $serviceId, string $hash)
+    public function __construct(Guzzle $guzzle, string $serviceId, string $hash)
     {
         $this->guzzle = $guzzle;
         $this->serviceId = $serviceId;
