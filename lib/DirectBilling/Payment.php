@@ -9,7 +9,7 @@ class Payment
 {
     private Guzzle $guzzle;
 
-    private int $serviceId;
+    private string $serviceId;
     private string $hash;
 
     private string $amountType = 'net';
