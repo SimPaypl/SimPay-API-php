@@ -13,23 +13,7 @@ Should also work with PHP 8.0.
 
 ### Composer
 
-To install the bindings via [Composer](https://getcomposer.org/), add the following to `composer.json`:
-
-```json
-{
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "https://github.com/8lines/simpay-php-sdk.git"
-    }
-  ],
-  "require": {
-    "8lines/simpay-php-sdk": "*@dev"
-  }
-}
-```
-
-Then run `composer install`
+To install run `composer require simpaypl/simpay`
 
 ### Manual Installation
 
