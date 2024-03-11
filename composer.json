@@ -1,26 +1,73 @@
 {
-  "name": "simpaypl/simpay",
-  "description": "Official SimPay API",
-  "type": "library",
-  "license": "MIT",
-  "minimum-stability": "stable",
-  "require": {
-      "php": ">=7.4",
-      "guzzlehttp/guzzle": "^7.4",
-      "ext-json": "*",
-      "illuminate/collections": ">=8.68",
-      "symfony/var-dumper": ">=5.3",
-      "ext-iconv": "*"
-  },
-  "authors": [
-      {
-          "name": "Krzysztof Grzelak",
-          "email": "k.grzelak@simpay.pl"
-      }
-  ],
-  "autoload": {
-      "psr-4": {
-          "SimPay\\API\\": "lib/"
-      }
-  }
+    "name": "simpaypl/simpay",
+    "description": "Official SimPay API",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "simpay",
+        "simpay-api",
+        "simpay-php",
+        "simpay-sdk",
+        "simpay-rest",
+        "simpay-api-php",
+        "simpay-php-sdk",
+        "simpay-sdk-php",
+        "simpay-rest-php",
+        "simpay-api-sdk",
+        "simpaypl",
+        "simpay.pl",
+        "simpay.pl-api",
+        "payments-api",
+        "payments-sdk",
+        "payments-rest",
+        "payments-api-php",
+        "payments-php-sdk",
+        "payments-sdk-php",
+        "payments-rest-php",
+        "payments-api-sdk",
+        "openapitools",
+        "openapi-generator",
+        "openapi",
+        "php",
+        "sdk",
+        "rest",
+        "api"
+    ],
+    "homepage": "https://simpay.pl/",
+    "authors": [
+        {
+            "name": "Simpay",
+            "homepage": "https://www.simpay.pl"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "guzzlehttp/guzzle": "^7.3",
+        "guzzlehttp/psr7": "^1.7 || ^2.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.5",
+        "pedrotroller/php-cs-custom-fixer": "^2.28",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^8.0 || ^9.0",
+        "rector/rector": "^0.19.0",
+        "symplify/easy-coding-standard": "*",
+        "vimeo/psalm": "5.18.0"
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.4"
+        },
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": { "Simpay\\" : "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Simpay\\Test\\" : "tests/" }
+    }
 }

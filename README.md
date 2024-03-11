@@ -1,77 +1,214 @@
-# SimPay-API-php
-Znajdziesz tu pliki do pobrania i instalacji oficjalnego klienta PHP wszystkich dostępnych API SimPay.
+## Simpay.pl API PHP SDK
 
-Dzięki naszemu klientowi *zyskasz narzędzia i biblioteki* do integracji API systemu płatności SimPay z Twoją stroną. Dzięki temu zyskasz pełen dostęp do wszystkich funkcji SimPay.
+# Description
 
-## Dokumentacja
-[Kliknij tutaj](https://docs.simpay.pl/pl/php/?php#wstep)
+This documentation is intended for current and future Simpay Partners. Prior to implementation, it is necessary to define the service in the Partner Panel and wait for its activation directly from the operators.
 
-## Wymagania
-* PHP 7.4+
+## Installation & Usage
 
-## Instalacja
+### Requirements
 
-SimPay API php można zainstalować za pomocą [Composer](https://packagist.org/packages/simpaypl/simpay).
+PHP 7.4 and later.
+Should also work with PHP 8.0.
 
 ### Composer
 
-#### Instalacja automatyczna
-```composer require simpaypl/simpay```
+To install the bindings via [Composer](https://getcomposer.org/), add the following to `composer.json`:
 
-#### Instalacja ręczna
-Wewnątrz `composer.json` dodaj następujący wpis:
-
-``` json
+```json
 {
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/8lines/simpay-php-sdk.git"
+    }
+  ],
   "require": {
-    "simpaypl/simpay": "dev-master"
+    "8lines/simpay-php-sdk": "*@dev"
   }
 }
 ```
 
-## Dlaczego warto wybrać SimPay?
-* *Prosta i szybka integracja* – nasz klient API jest intuicyjny w obsłudze, dzięki czemu poradzisz sobie z integracją nawet bez większych umiejętności.
-* *Natychmiastowe zarobki* – ażdego dnia prześlemy Ci zyski z płatności online
-* *Bezpieczeństwo i ciągłe wsparcie techniczne* – gwarantujemy odpowiednie zabezpieczenie wszystkich płatności. A w razie problemów z integracją lub działaniem systemów SimPay, natychmiast reagujemy wsparciem.
+Then run `composer install`
 
-Masz problem z integracją lub chcesz dowiedzieć się więcej? Napisz na kontakt@simpay.pl
+### Manual Installation
 
----
+Download the files and include `autoload.php`:
 
-# SimPay-API-php
-Here you will find files to download and install the official PHP client of all available SimPay APIs.
-
-With our client, you will get *the tools and libraries* to integrate the SimPay payment system API into your site. This will give you full access to all SimPay features.
-
-## Documentation
-[Click here](https://docs.simpay.pl/en/php/?php#wstep)
-
-## Requirements
-* PHP 7.4+
-
-## Installation
-
-The SimPay API php can be installed using [Composer](https://packagist.org/packages/simpaypl/simpay).
-
-### Composer
-
-#### Automatic install
-```composer require simpaypl/simpay```
-
-#### Manual install
-Inside of `composer.json` specify the following:
-
-``` json
-{
-  "require": {
-    "simpaypl/simpay": "dev-master"
-  }
-}
+```php
+<?php
+require_once('/prject/path/vendor/autoload.php');
 ```
 
-## Why should I choose SimPay?
-* *Easy and fast integration* – our API client is inuitive to use, so you can handle the integration even without much skill.
-* *Instant earnings* – we will send you profits from online payments every day.
-* *Safety and continuous technical support* – we guarantee proper security for all payments. And in case of problems with the integration or operation of SimPay systems, we immediately respond with support.
+## Getting Started
 
-Do you have an issue with integration or want to learn more? Write to kontakt@simpay.pl
+```php
+<?php
+
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$configuration = new Configuration('your_api_key', 'your_api_password', 'en');
+$client = new Client([
+    'base_uri' => Configuration::API_BASE_URI,
+]);
+
+$api = new Simpay\DirectBillingApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    $client,
+    $config
+);
+
+try {
+    $result = $api->directBillingGetServices();
+    print_r($result);
+} catch (\Exception $e) {
+    echo 'Exception when calling DirectBillingApi->directbillingGetServices: ', $e->getMessage(), PHP_EOL;
+}
+
+```
+### Examples
+
+All examples are in the [examples](docs/examples/) directory.
+
+## Documentation for API Endpoints
+
+## API Endpoints
+
+All URIs are relative to *https://api.simpay.pl*
+- [Configuration](docs/Configuration.md)
+- [DirectBillingApi](docs/DirectBillingApi.md)
+- [DirectBillingCalculateApi](docs/DirectBillingCalculateApi.md)
+- [DirectBillingTransactionApi](docs/DirectBillingTransactionApi.md)
+- [HttpClientFactory](docs/HttpClientFactory.md)
+- [PaymentApi](docs/PaymentApi.md)
+- [SmsNumberApi](docs/SmsNumberApi.md)
+- [SmsServiceApi](docs/SmsServiceApi.md)
+- [SmsTransactionApi](docs/SmsTransactionApi.md)
+
+## Models
+
+### Requests:
+- [Amount](docs/Model/Amount.md)
+- [AmountType](docs/Model/AmountType.md)
+- [Billing](docs/Model/Billing.md)
+- [CallbackReturnUrl](docs/Model/Request/CallbackReturnUrl.md)
+- [CartItem](docs/Model/Request/CartItem.md)
+- [Channel](docs/Model/Request/Channel.md)
+- [ChannelType](docs/Model/Request/ChannelType.md)
+- [Control](docs/Model/Request/Control.md)
+- [CreatePayment](docs/Model/Request/CreatePayment.md)
+- [Currency](docs/Model/Request/Currency.md)
+- [Customer](docs/Model/Request/Customer.md)
+- [Description](docs/Model/Request/Description.md)
+- [DirectBillingTransaction](docs/Model/Request/DirectBillingTransaction.md)
+- [DirectBillingTransactionStatus](docs/Model/Request/DirectBillingTransactionStatus.md)
+- [DirectChannel](docs/Model/Request/DirectChannel.md)
+- [Filters](docs/Model/Request/Filters.md)
+- [Operator](docs/Model/Request/Operator.md)
+- [PaymentTransactionId](docs/Model/Request/PaymentTransactionId.md)
+- [PhoneNumber](docs/Model/Request/PhoneNumber.md)
+- [Referer](docs/Model/Request/Referer.md)
+- [ServiceId](docs/Model/Request/ServiceId.md)
+- [ServiceNumber](docs/Model/Request/ServiceNumber.md)
+- [Shipping](docs/Model/Request/Shipping.md)
+- [SmsCode](docs/Model/Request/SmsCode.md)
+- [SmsNumber](docs/Model/Request/SmsNumber.md)
+- [SmsTransactionId](docs/Model/Request/SmsTransactionId.md)
+- [StreamId](docs/Model/Request/StreamId.md)
+
+### Responses:
+- [Amount](docs/Model/Response/Amount.md)
+- [AmountType](docs/Model/Response/AmountType.md)
+- [CallbackReturnUrl](docs/Model/Response/CallbackReturnUrl.md)
+- [DirectBillingTransaction](docs/Model/Response/DirectBillingTransaction.md)
+- [DirectBillingTransactionCollection](docs/Model/Response/DirectBillingTransactionCollection.md)
+- [DirectBillingTransactionList](docs/Model/Response/DirectBillingTransactionList.md)
+- [DirectBillingTransactionNotify](docs/Model/Response/DirectBillingTransactionNotify.md)
+- [Operator](docs/Model/Response/Operator.md)
+- [Pagination](docs/Model/Response/Pagination.md)
+- [PaginationLinks](docs/Model/Response/PaginationLinks.md)
+- [PaymentChannel](docs/Model/Response/PaymentChannel.md)
+- [PaymentChannelCollection](docs/Model/Response/PaymentChannelCollection.md)
+- [PaymentCreate](docs/Model/Response/PaymentCreate.md)
+- [PaymentService](docs/Model/Response/PaymentService.md)
+- [PaymentServiceCollection](docs/Model/Response/PaymentServiceCollection.md)
+- [PaymentServiceTransaction](docs/Model/Response/PaymentServiceTransaction.md)
+- [PaymentServiceTransactionCollection](docs/Model/Response/PaymentServiceTransactionCollection.md)
+- [PaymentServiceTransactionStatus](docs/Model/Response/PaymentServiceTransactionStatus.md)
+- [PaymentServiceTransaction](docs/Model/Response/PaymentServiceTransaction.md)
+- [PaymentServiceTransactionAddress](docs/Model/Response/PaymentTransactionAddress.md)
+- [PaymentServiceTransactionAmount](docs/Model/Response/PaymentTransactionAmount.md)
+- [PaymentServiceTransactionCartItems](docs/Model/Response/PaymentTransactionCartItem.md)
+- [PaymentServiceTransactionCustomer](docs/Model/Response/PaymentTransactionCustomer.md)
+- [PaymentServiceTransactionRedirect](docs/Model/Response/PaymentTransactionRedirect.md)
+- [Service](docs/Model/Response/Service.md)
+- [ServiceCalculation](docs/Model/Response/ServiceCalculation.md)
+- [ServiceCalculationOperatorAmount](docs/Model/Response/ServiceCalculationOperatorAmount.md)
+- [ServiceCollection](docs/Model/Response/ServiceCollection.md)
+- [ServiceNumber](docs/Model/Response/ServiceNumber.md)
+- [ServiceStatus](docs/Model/Response/ServiceStatus.md)
+- [ServiceType](docs/Model/Response/ServiceType.md)
+- [SmsNumber](docs/Model/Response/SmsNumber.md)
+- [SmsNumberCollection](docs/Model/Response/SmsNumberCollection.md)
+- [SmsService](docs/Model/Response/SmsService.md)
+- [SmsServiceCheckCodeData](docs/Model/Response/SmsServiceCheckCodeData.md)
+- [SmsServiceCollection](docs/Model/Response/SmsServiceCollection.md)
+- [SmsTransaction](docs/Model/Response/SmsTransaction.md)
+- [SmsTransactionCollection](docs/Model/Response/SmsTransactionCollection.md)
+
+### Exceptions:
+
+- [Simpay\Exception\ExceptionFactory](docs/Exception/ExceptionFactory.md)
+- [Simpay\Exception\Forbidden](docs/Exception/Forbidden.md)
+- [Simpay\Exception\InternalServerError](docs/Exception/InternalServerError.md)
+- [Simpay\Exception\NotFound](docs/Exception/NotFound.md)
+- [Simpay\Exception\Unauthorized](docs/Exception/Unauthorized.md)
+- [Simpay\Exception\Unknown](docs/Exception/Unknown.md)
+- [Simpay\Exception\UnprocessableEntity](docs/Exception/UnprocessableEntity.md)
+
+All the exceptions have the `getErrors` method which returns an array of errors returned by the API.
+
+## Tests
+
+To run the tests, use:
+
+```bash
+composer install
+bin/phpunit
+```
+
+## Docker
+
+To build the Docker image:
+
+```bash
+make build
+```
+To run the Docker image:
+
+```bash
+make up
+```
+
+Enter the container (bash):
+
+```bash
+make bash
+```
+
+To run the tests:
+
+```bash
+make test
+```
+
+To run the linter:
+
+```bash
+make lint
+```
+
+## About this package
+
+- API version: `1.0.0`

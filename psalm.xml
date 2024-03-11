@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<psalm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="">
+    <projectFiles>
+        <directory name="src/" />
+        <directory name="docs/examples/" />
+        <ignoreFiles>
+            <directory name="vendor" />
+        </ignoreFiles>
+    </projectFiles>
+    <fileExtensions>
+        <extension name=".php"/>
+    </fileExtensions>
+</psalm>

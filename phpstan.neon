@@ -1,0 +1,6 @@
+parameters:
+    tmpDir: .cache/phpstan
+    level: 3
+    paths:
+        - src
+        - tests

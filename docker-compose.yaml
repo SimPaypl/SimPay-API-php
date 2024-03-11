@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  php:
+    container_name: simpay_sdk_php
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - ./:/app
+    working_dir: /app
