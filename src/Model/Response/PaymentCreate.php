@@ -17,6 +17,6 @@ class PaymentCreate
 
     public static function createFromResponse(array $data): self
     {
-        return new self($data['transaction_id'], $data['redirect_url']);
+        return new self($data['transactionId'], $data['redirectUrl']);
     }
 }
