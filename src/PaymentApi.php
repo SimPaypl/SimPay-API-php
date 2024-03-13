@@ -32,7 +32,7 @@ class PaymentApi implements PaymentInterface
     public function paymentGetServices(): PaymentServiceCollection
     {
         try {
-            $response = $this->client->request('GET', 'payment/services',);
+            $response = $this->client->request('GET', 'payment',);
             $data = \json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR,);
 
             $services = [];
@@ -50,7 +50,7 @@ class PaymentApi implements PaymentInterface
     public function paymentGetService(ServiceId $serviceId): PaymentService
     {
         try {
-            $response = $this->client->request('GET', \sprintf('payment/services/%s', $serviceId),);
+            $response = $this->client->request('GET', \sprintf('payment/%s', $serviceId),);
             $data = \json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR,);
 
             return PaymentService::createFromResponse($data['data']);
@@ -62,7 +62,7 @@ class PaymentApi implements PaymentInterface
     public function paymentGetTransactions(ServiceId $serviceId): PaymentServiceTransactionCollection
     {
         try {
-            $response = $this->client->request('GET', \sprintf('payment/services/%s/transactions', $serviceId),);
+            $response = $this->client->request('GET', \sprintf('payment/%s/transactions', $serviceId),);
             $data = \json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR,);
 
             $transactions = [];
@@ -103,7 +103,7 @@ class PaymentApi implements PaymentInterface
         try {
             $response = $this->client->request(
                 'POST',
-                \sprintf('payment/%s/transaction', $serviceId),
+                \sprintf('payment/%s/transactions', $serviceId),
                 [
                     RequestOptions::JSON => $request->toArray(),
                 ],
@@ -121,7 +121,7 @@ class PaymentApi implements PaymentInterface
         try {
             $response = $this->client->request(
                 'GET',
-                \sprintf('payment/%s/transaction/%s', $serviceId, $transactionId),
+                \sprintf('payment/%s/transactions/%s', $serviceId, $transactionId),
             );
             $data = \json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR,);
 
