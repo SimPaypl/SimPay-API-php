@@ -16,3 +16,6 @@ composer.phar
 # PHPUnit cache
 .phpunit.result.cache
 /.cache/
+
+# Phpactor cache
+.phpactor.json
