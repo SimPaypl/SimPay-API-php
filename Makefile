@@ -7,7 +7,6 @@ bash: ## login into container
 lint: ## Check code style
 	docker-compose exec php bin/ecs check --ansi --config ecs.php --fix
 	docker-compose exec php bin/rector --ansi
-	docker-compose exec php bin/psalm
 	docker-compose exec php bin/phpstan analyse --ansi --no-progress --configuration phpstan.neon --memory-limit=1G
 
 test: ## Run tests
