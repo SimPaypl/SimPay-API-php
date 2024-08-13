@@ -9,7 +9,6 @@
       "guzzlehttp/guzzle": "^7.4",
       "ext-json": "*",
       "illuminate/collections": ">=8.68",
-      "symfony/var-dumper": ">=5.3",
       "ext-iconv": "*"
   },
   "authors": [
