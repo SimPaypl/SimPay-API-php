@@ -15,4 +15,4 @@ FROM cli
 COPY . /app/
 WORKDIR /app/
 
-RUN composer install
+RUN composer install --optimize-autoloader --classmap-authoritative --no-interaction --prefer-dist --no-progress
