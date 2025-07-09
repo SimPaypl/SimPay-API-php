@@ -20,7 +20,7 @@ class DirectChannel implements RequestInterface
     public function toArray(): array
     {
         return [
-            'direct_channel' => $this->value,
+            'directChannel' => $this->value,
         ];
     }
 }
