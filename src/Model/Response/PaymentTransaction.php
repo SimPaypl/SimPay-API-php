@@ -14,13 +14,13 @@ class PaymentTransaction
     public ?string $description;
     public PaymentTransactionRedirect $redirects;
     public PaymentTransactionCustomer $customer;
-    public PaymentTransactionAddress $billing;
-    public PaymentTransactionAddress $shipping;
+    public ?PaymentTransactionAddress $billing;
+    public ?PaymentTransactionAddress $shipping;
     /**
      * @var PaymentTransactionCartItem[]|null
      */
     public ?array $cart;
-    public \DateTimeImmutable $paidAt;
+    public ?\DateTimeImmutable $paidAt;
     public ?\DateTimeImmutable $expiresAt;
     public \DateTimeImmutable $createdAt;
     public \DateTimeImmutable $updatedAt;
@@ -34,10 +34,10 @@ class PaymentTransaction
         ?string $description,
         PaymentTransactionRedirect $redirects,
         PaymentTransactionCustomer $customer,
-        PaymentTransactionAddress $billing,
-        PaymentTransactionAddress $shipping,
+        ?PaymentTransactionAddress $billing,
+        ?PaymentTransactionAddress $shipping,
         ?array $cart,
-        \DateTimeImmutable $paidAt,
+        ?\DateTimeImmutable $paidAt,
         ?\DateTimeImmutable $expiresAt,
         \DateTimeImmutable $createdAt,
         \DateTimeImmutable $updatedAt
@@ -76,8 +76,8 @@ class PaymentTransaction
             $data['description'],
             PaymentTransactionRedirect::createFromResponse($data['redirect']),
             PaymentTransactionCustomer::createFromResponse($data['customer']),
-            PaymentTransactionAddress::createFromResponse($data['billing']),
-            PaymentTransactionAddress::createFromResponse($data['shipping']),
+            empty($data['billing']) ? null : PaymentTransactionAddress::createFromResponse($data['billing']),
+            empty($data['shipping']) ? null : PaymentTransactionAddress::createFromResponse($data['shipping']),
             $cartItems,
             new \DateTimeImmutable($data['paid_at']),
             new \DateTimeImmutable($data['expires_at']),
