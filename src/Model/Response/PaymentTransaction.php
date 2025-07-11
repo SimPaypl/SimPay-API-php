@@ -63,7 +63,7 @@ class PaymentTransaction
     {
         $cartItems = [];
 
-        foreach ($data['cart'] as $cartItem) {
+        foreach (($data['cart'] ?? []) as $cartItem) {
             $cartItems[] = PaymentTransactionCartItem::createFromResponse($cartItem);
         }
 
