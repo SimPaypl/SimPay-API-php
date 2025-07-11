@@ -74,7 +74,7 @@ class PaymentTransaction
             $data['channel'],
             $data['control'],
             $data['description'],
-            PaymentTransactionRedirect::createFromResponse($data['redirects']),
+            PaymentTransactionRedirect::createFromResponse($data['redirect']),
             PaymentTransactionCustomer::createFromResponse($data['customer']),
             PaymentTransactionAddress::createFromResponse($data['billing']),
             PaymentTransactionAddress::createFromResponse($data['shipping']),
