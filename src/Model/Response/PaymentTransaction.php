@@ -79,8 +79,8 @@ class PaymentTransaction
             empty($data['billing']) ? null : PaymentTransactionAddress::createFromResponse($data['billing']),
             empty($data['shipping']) ? null : PaymentTransactionAddress::createFromResponse($data['shipping']),
             $cartItems,
-            new \DateTimeImmutable($data['paid_at']),
-            new \DateTimeImmutable($data['expires_at']),
+            empty($data['paid_at']) ? null : new \DateTimeImmutable($data['paid_at']),
+            empty($data['expires_at']) ? null : new \DateTimeImmutable($data['expires_at']),
             new \DateTimeImmutable($data['created_at']),
             new \DateTimeImmutable($data['updated_at']),
         );
