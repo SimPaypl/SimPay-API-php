@@ -2,8 +2,18 @@
   "openapi": "3.0.3",
   "info": {
     "title": "simpay-api",
-    "description": "",
-    "version": "1.0.0"
+    "description": "[English version](/en/apis)",
+    "version": "1.0.0",
+    "x-logo": {
+      "url": "https://simpay.pl/assets/svg/logo-main.svg",
+      "altText": "SimPay"
+    },
+    "termsOfService": "https://simpay.pl/uploads/download/documents/regulamin.pdf",
+    "contact": {
+      "name": "Support",
+      "url": "https://simpay.pl/kontakt",
+      "email": "kontakt@simpay.pl"
+    }
   },
   "servers": [
     {
@@ -15,13 +25,11 @@
       "name": "SMS"
     },
     {
-      "name": "DirectBilling",
-      "description": "# Sygnatura\n\n## Obliczanie sygnatury przy odbieraniu notyfikacji\n  Sygnature generujemy za pomocą zestawienia ze sobą wszystkich odebranych parametrów (oprócz signature) do API w kolejności z dostępnej powyżej tabli oddzielając je seperatorem | i dodając na końcu klucz dostępny w panelu klienta w usłudze.<br/>\n  Hashowanie musi odbyć się za pomocą sha256.<br/>\n  Przykład: <br/>\n  `dc261d4f-31ef-4728-bfd6-97bbe2a5ef0a|e14f8074|transaction_db_payed|11.07|13.67|5.00|https://www.simpay.pl/complete|https://www.simpay.pl/failure|test|123123123|1|klucz`\n"
+      "name": "DirectBilling"
     },
     {
       "name": "Payment",
-      "x-displayName": "Płatności online",
-      "description": "# Sygnatura\n\n## Obliczanie sygnatury przy odbieraniu notyfikacji\n  Sygnature generujemy za pomocą zestawienia ze sobą wszystkich odebranych parametrów (oprócz signature) do API w kolejności z dostępnej powyżej tabli oddzielając je seperatorem | i dodając na końcu klucz dostępny w panelu klienta w usłudze.<br/>\n  Hashowanie musi odbyć się za pomocą sha256.<br/>\n  Przykład: <br/>\n  `dc261d4f-31ef-4728-bfd6-97bbe2a5ef0a|e14f8074|transaction_paid|10|PLN|9.9|88643ada8857f25a1f391395f922f7db|blik|production|klucz`\n"
+      "x-displayName": "Płatności online"
     }
   ],
   "paths": {
@@ -1021,7 +1029,7 @@
         }
       }
     },
-    "/payment/{serviceId}/transaction/{transactionId}": {
+    "/payment/{serviceId}/transactions/{transactionId}": {
       "get": {
         "security": [
           {
@@ -1076,13 +1084,1123 @@
           }
         }
       }
+    },
+    "/payment/{serviceId}/transactions/{transactionId}/refunds": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions.create"
+            ]
+          }
+        ],
+        "summary": "Pobieranie listy zwrotów dla transakcji",
+        "operationId": "paymentGetTransactionRefunds",
+        "description": "",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          },
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paymentGetTransactionRefundsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions.create"
+            ]
+          }
+        ],
+        "summary": "Utworzenie zwrotu dla transakcji",
+        "operationId": "paymentMakeTransactionRefund",
+        "description": "",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          },
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paymentMakeTransactionRefundResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Błąd",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "message"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Request status"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "description": "Error status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "message": "The wallet balance is smaller than the transaction amount."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Błąd",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "message"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Request status"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "description": "Error status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "errorCode": "TRANSACTION_NOT_PAID",
+                    "message": "Transaction is not paid."
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/{serviceId}/transactions/{transactionId}/refunds/{refundId}": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions.create"
+            ]
+          }
+        ],
+        "summary": "Pobieranie pojedynczego zwrotu w transakcji",
+        "operationId": "paymentTransactionRefundShow",
+        "description": "",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          },
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionId"
+            }
+          },
+          {
+            "in": "path",
+            "name": "refundId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/RefundId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paymentShowTransactionRefundResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/payment/{serviceId}/currencies": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.services"
+            ]
+          }
+        ],
+        "summary": "Pobieranie listy walut dla usługi",
+        "operationId": "paymentGetCurrencies",
+        "description": "",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paymentGetCurrenciesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          }
+        }
+      }
+    },
+    "/payment/{serviceId}/blik/level0/{transactionId}": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions"
+            ]
+          }
+        ],
+        "summary": "Podanie kodu BLIK do transakcji Level 0",
+        "operationId": "paymentBlikLevel0",
+        "description": "Zobacz https://docs.simpay.pl/payment/blik-level0 po więcej informacji.",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          },
+          {
+            "in": "path",
+            "name": "transactionId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/TransactionId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/paymentBlik0TransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Payment confirmation sent to Payers Banking App"
+          },
+          "400": {
+            "description": "Invalid BLIK code or BLIK ticket related error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "errorCode",
+                    "message"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Request status"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "description": "Error status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "errorCode": "INVALID_BLIK_CODE",
+                    "message": "Invalid BLIK code."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          },
+          "429": {
+            "description": "Zbyt wiele nieudanych prób kodu BLIK w przeciągu minuty (per płacący)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "errorCode",
+                    "message",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Request status"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "description": "Error status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "retryAfter": {
+                          "type": "integer",
+                          "description": "Next attempt available in seconds (for this payer)"
+                        }
+                      }
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "errorCode": "TOO_MANY_FAILED_ATTEMPTS",
+                    "message": "Too many failed attempts with providing BLIK ticket for this user.",
+                    "data": {
+                      "retryAfter": 17
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/payment/{serviceId}/subscriptions": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions"
+            ]
+          }
+        ],
+        "summary": "Pobieranie listy subskrypcji",
+        "operationId": "paymentSubscriptionIndex",
+        "description": "Zobacz https://docs.simpay.pl/payment/blik-recurrent po więcej informacji.",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/subscriptionStatus"
+            },
+            "example": "subscription_active"
+          },
+          {
+            "in": "query",
+            "name": "filter[mode]",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/subscriptionMode"
+            },
+            "example": "BLIK"
+          },
+          {
+            "in": "query",
+            "name": "filter[uuid]",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/SubscriptionId"
+            },
+            "example": "019970c6-3d3e-708c-9313-5f89e251e2c0"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Numer strony",
+            "example": 1,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "description": "Ile wyników na stronę pokazać",
+            "example": 20,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "-created_at",
+                "created_at"
+              ]
+            },
+            "description": "Pokazuj w kolejności od (-created_at = najnowszych, created_at = najstarszych)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paymentGetSubscriptionsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/payment/{serviceId}/blik/subscriptions": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions"
+            ]
+          }
+        ],
+        "summary": "Utworzenie subskrypcji",
+        "operationId": "paymentBlikSubscriptionCreate",
+        "description": "Zobacz https://docs.simpay.pl/payment/blik-recurrent po więcej informacji.",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/paymentBlikSubscriptionCreateRequest"
+              },
+              "examples": {
+                "modelA": {
+                  "summary": "Model A",
+                  "value": {
+                    "transactionId": "bda2d37c-e64d-4855-af7c-91aac91a0d6a",
+                    "ticket": {
+                      "T6": "462755"
+                    },
+                    "alias": {
+                      "value": "AABBCC",
+                      "type": "PAYID",
+                      "label": "Płatność za plan premium w serwisie aaa"
+                    },
+                    "options": {
+                      "model": "A",
+                      "expiresAt": "2030-09-22",
+                      "frequency": "30D",
+                      "amountLimitPerTransaction": 30,
+                      "initiationDate": "2025-09-22",
+                      "amountLimitTotal": 30000
+                    }
+                  }
+                },
+                "modelO": {
+                  "summary": "Model O",
+                  "value": {
+                    "transactionId": "bda2d37c-e64d-4855-af7c-91aac91a0d6a",
+                    "ticket": {
+                      "T6": "462755"
+                    },
+                    "alias": {
+                      "value": "AABBCC",
+                      "type": "PAYID",
+                      "label": "Płatność za plan premium w serwisie aaa"
+                    },
+                    "options": {
+                      "model": "O",
+                      "expiresAt": "2030-09-22",
+                      "initiationDate": "2025-09-22"
+                    }
+                  }
+                },
+                "modelM": {
+                  "summary": "Model M",
+                  "value": {
+                    "transactionId": "bda2d37c-e64d-4855-af7c-91aac91a0d6a",
+                    "ticket": {
+                      "T6": "462755"
+                    },
+                    "alias": {
+                      "value": "AABBCC",
+                      "type": "PAYID",
+                      "label": "Płatność za plan premium w serwisie aaa"
+                    },
+                    "options": {
+                      "model": "M",
+                      "expiresAt": "2030-09-22",
+                      "initiationDate": "2025-09-22",
+                      "frequency": "30D"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Subskrypcja oraz alias utworzone",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Status zapytania"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "subscriptionId",
+                        "aliasId"
+                      ],
+                      "properties": {
+                        "subscriptionId": {
+                          "$ref": "#/components/schemas/SubscriptionId"
+                        },
+                        "aliasId": {
+                          "$ref": "#/components/schemas/AliasId"
+                        }
+                      },
+                      "example": {
+                        "subscriptionId": "019970c6-3d3e-708c-9313-5f89e251e2c0",
+                        "aliasId": "019970c6-3ce8-71e7-8214-20fd635532fb"
+                      }
+                    }
+                  },
+                  "example": {
+                    "success": true,
+                    "data": {
+                      "subscriptionId": "019970c6-3d3e-708c-9313-5f89e251e2c0",
+                      "aliasId": "019970c6-3ce8-71e7-8214-20fd635532fb"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Błędny kod BLIK lub inny podobny błąd",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "errorCode",
+                    "message"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Request status"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "description": "Error status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "errorCode": "INVALID_BLIK_CODE",
+                    "message": "Invalid BLIK code."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "409": {
+            "description": "Alias już istnieje",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "errorCode",
+                    "message"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Request status"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "description": "Error status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "errorCode": "ALIAS_ALREADY_EXISTS",
+                    "message": "Selected alias value has been already in our system. You must pass unique alias value, for example subscription id."
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/payment/{serviceId}/blik/subscriptions/{subscriptionId}/autopayment": {
+      "post": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions"
+            ]
+          }
+        ],
+        "summary": "Dokonaj Płatności Powtarzalnej BLIK",
+        "operationId": "paymentBlikSubscriptionExecuteAutoPayment",
+        "description": "Zobacz https://docs.simpay.pl/payment/blik-recurrent po więcej informacji.",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          },
+          {
+            "in": "path",
+            "name": "subscriptionId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/SubscriptionId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/paymentBlikSubscriptionExecuteAutoPaymentRequest"
+              },
+              "example": {
+                "transactionId": "9475bfd4-0935-4945-8621-2ec22e561ac9",
+                "descriptions": {
+                  "line1": "Subskrypcja na muzykę za wrzesień"
+                },
+                "alias": {
+                  "label": "Płatność za plan Gold",
+                  "noDelay": true
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Subskrypcja przekazana do realizacji",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "data"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Status zapytania"
+                    },
+                    "data": {
+                      "type": "object",
+                      "required": [
+                        "needsUserConfirmation"
+                      ],
+                      "properties": {
+                        "needsUserConfirmation": {
+                          "type": "boolean",
+                          "description": "Jeśli wartość false - transakcja przekazana od razu do BLIK. Jeśli true - system antifraud wykrył ryzyko i transakcja czeka na ręczne potwierdzenie przez płacącego"
+                        }
+                      },
+                      "example": {
+                        "needsUserConfirmation": false
+                      }
+                    }
+                  },
+                  "example": {
+                    "success": true,
+                    "data": {
+                      "needsUserConfirmation": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Błąd przy realizacji Płatności Powtarzalnej",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "success",
+                    "errorCode",
+                    "message"
+                  ],
+                  "properties": {
+                    "success": {
+                      "type": "boolean",
+                      "description": "Request status"
+                    },
+                    "errorCode": {
+                      "type": "string",
+                      "description": "Error status code"
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "Error message"
+                    }
+                  },
+                  "example": {
+                    "success": false,
+                    "errorCode": "INVALID_BLIK_CODE",
+                    "message": "Invalid BLIK code."
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
+    },
+    "/payment/{serviceId}/blik/aliases": {
+      "get": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions"
+            ]
+          }
+        ],
+        "summary": "Pobieranie listy aliasów BLIK",
+        "operationId": "paymentBlikAliasesIndex",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          },
+          {
+            "in": "query",
+            "name": "filter[status]",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/blikAliasStatus"
+            },
+            "example": "alias_active"
+          },
+          {
+            "in": "query",
+            "name": "filter[type]",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/blikAliasType"
+            },
+            "example": "PAYID"
+          },
+          {
+            "in": "query",
+            "name": "filter[uuid]",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/AliasId"
+            },
+            "example": "019970c6-3ce8-71e7-8214-20fd635532fb"
+          },
+          {
+            "in": "query",
+            "name": "filter[value]",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "description": "Wartość aliasu BLIK",
+              "maxLength": 64,
+              "example": "AABBCC"
+            },
+            "example": "019970c6-3ce8-71e7-8214-20fd635532fb"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "description": "Numer strony",
+            "example": 1,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "in": "query",
+            "name": "perPage",
+            "required": false,
+            "description": "Ile wyników na stronę pokazać",
+            "example": 20,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 20
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "-created_at",
+                "created_at"
+              ]
+            },
+            "description": "Pokazuj w kolejności od (-created_at = najnowszych, created_at = najstarszych)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/paymentGetBlikAliasesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "bearerAuth": [
+              "payment.transactions"
+            ]
+          }
+        ],
+        "summary": "Usuwanie/wyrejestrowanie aliasu",
+        "operationId": "paymentBlikAliasUnregister",
+        "description": "Zobacz https://docs.simpay.pl/payment/blik-recurrent po więcej informacji.",
+        "tags": [
+          "Payment"
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "serviceId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/ServiceId"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/paymentBlikAliasUnregisterRequest"
+              },
+              "examples": {
+                "simpayId": {
+                  "summary": "Wyrejestrowanie przez ID aliasu SimPay",
+                  "value": {
+                    "uuid": "0198a54d-05d9-7177-9ac6-5d9831bc988d",
+                    "reason": "Anulowanie planu"
+                  }
+                },
+                "aliasValueAndType": {
+                  "summary": "Wyrejestrowanie przez value + type aliasu",
+                  "value": {
+                    "value": "AABBCC",
+                    "type": "PAYID",
+                    "reason": "Anulowanie planu"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Alias został wyrejestrowany. Zostanie wysłany IPN `blik:alias_status_changed`"
+          },
+          "401": {
+            "$ref": "#/components/responses/Unauthorized"
+          },
+          "403": {
+            "$ref": "#/components/responses/Forbidden"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "422": {
+            "$ref": "#/components/responses/UnprocessableContent"
+          }
+        }
+      }
     }
   },
   "x-webhooks": {
     "directbillingTransactionNotification": {
       "post": {
-        "summary": "Odbieranie informacji o transakcji",
-        "description": "`POST`\n",
+        "summary": "Odbieranie informacji o transakcji DirectBilling",
+        "description": "# Sygnatura\n\n## Obliczanie sygnatury przy odbieraniu notyfikacji\nSygnature generujemy za pomocą zestawienia ze sobą wszystkich odebranych parametrów (oprócz signature) do API w kolejności z dostępnej powyżej tabli oddzielając je seperatorem | i dodając na końcu klucz dostępny w panelu klienta w usłudze.<br/>\nHashowanie musi odbyć się za pomocą sha256.<br/>\nPrzykład: <br/>\n`dc261d4f-31ef-4728-bfd6-97bbe2a5ef0a|e14f8074|transaction_db_payed|11.07|13.67|5.00|https://www.simpay.pl/complete|https://www.simpay.pl/failure|test|123123123|1|klucz`\n\nNotyfikacja wysyłana jest metodą `POST` i wymaga od Ciebie odpowiedzi w body `OK` oraz Http Code `200`\n",
         "operationId": "directbillingTransactionNotification",
         "tags": [
           "DirectBilling"
@@ -1118,8 +2236,8 @@
     },
     "paymentTransactionNotification": {
       "post": {
-        "summary": "Odbieranie informacji o transakcji",
-        "description": "`POST`\n",
+        "summary": "Odbieranie informacji o transakcji płatności online",
+        "description": "# Zapoznaj się z linkiem poniżej. Tam uzyskasz wszystkie szczegóły:\nhttps://docs.simpay.pl/notifications/payment\n",
         "operationId": "paymentTransactionNotification",
         "tags": [
           "Payment"
@@ -2319,6 +3437,30 @@
         "minLength": 36,
         "maxLength": 36
       },
+      "RefundId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Id zwrotu",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "minLength": 36,
+        "maxLength": 36
+      },
+      "SubscriptionId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Id subskrypcji",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "minLength": 36,
+        "maxLength": 36
+      },
+      "AliasId": {
+        "type": "string",
+        "format": "uuid",
+        "description": "Id aliasu",
+        "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+        "minLength": 36,
+        "maxLength": 36
+      },
       "directbillingTransactionCreateResponse": {
         "type": "object",
         "required": [
@@ -2739,9 +3881,81 @@
           "transaction_confirmed",
           "transaction_generated",
           "transaction_paid",
-          "transaction_failed",
+          "transaction_failure",
           "transaction_expired",
-          "transaction_canceled"
+          "transaction_canceled",
+          "transaction_refunded",
+          "transaction_fraud",
+          "transaction_fraud_possibility"
+        ]
+      },
+      "paymentTransactionRefundStatus": {
+        "type": "string",
+        "description": "Status zwrotu",
+        "enum": [
+          "refund_new",
+          "refund_pending",
+          "refund_completed",
+          "refund_rejected",
+          "refund_failed"
+        ]
+      },
+      "subscriptionStatus": {
+        "type": "string",
+        "description": "Status subskrypcji",
+        "enum": [
+          "subscription_pending",
+          "subscription_active",
+          "subscription_cancelled",
+          "subscription_expired",
+          "subscription_finished",
+          "subscription_fraudulent"
+        ]
+      },
+      "blikAliasType": {
+        "type": "string",
+        "description": "Typ aliasu BLIK",
+        "enum": [
+          "PAYID",
+          "UID"
+        ]
+      },
+      "blikAliasStatus": {
+        "type": "string",
+        "description": "Status aliasu BLIK",
+        "enum": [
+          "alias_pending_registration",
+          "alias_active",
+          "alias_expired",
+          "alias_unregistered"
+        ]
+      },
+      "blikSubscriptionModel": {
+        "type": "string",
+        "description": "Model Płatności Powtarzalnej BLIK",
+        "enum": [
+          "A",
+          "O",
+          "M"
+        ]
+      },
+      "subscriptionMode": {
+        "type": "string",
+        "description": "Tryb subskrypcji",
+        "enum": [
+          "BLIK",
+          "CARD"
+        ]
+      },
+      "subscriptionCancelledBy": {
+        "type": "string",
+        "description": "Subskrypcja anulowana przez",
+        "enum": [
+          "system",
+          "antifraud",
+          "merchant",
+          "payer",
+          "blik"
         ]
       },
       "paymentGetTransactionsResponse": {
@@ -2831,6 +4045,634 @@
             "total": 2,
             "count": 2,
             "per_page": 15,
+            "current_page": 1,
+            "total_pages": 1,
+            "links": {
+              "next_page": null,
+              "prev_page": null
+            }
+          }
+        }
+      },
+      "paymentGetTransactionRefundsResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Request status"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "status",
+                "amount",
+                "currency",
+                "wallet_amount",
+                "wallet_currency",
+                "created_at",
+                "updated_at"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/RefundId"
+                },
+                "status": {
+                  "$ref": "#/components/schemas/paymentTransactionRefundStatus"
+                },
+                "amount": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Kwota zwrotu w walucie płacącego"
+                },
+                "currency": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 3,
+                  "description": "Waluta płacącego"
+                },
+                "wallet_amount": {
+                  "type": "number",
+                  "format": "float",
+                  "description": "Kwota zwrotu pobrana z portfela"
+                },
+                "wallet_currency": {
+                  "type": "string",
+                  "minLength": 3,
+                  "maxLength": 3,
+                  "description": "Waluta portfela"
+                },
+                "created_at": {
+                  "$ref": "#/components/schemas/DateTime"
+                },
+                "updated_at": {
+                  "$ref": "#/components/schemas/DateTime"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "success": true,
+          "data": [
+            {
+              "id": "019483a5-885e-70f7-9b5b-94387a6690da",
+              "status": "refund_completed",
+              "amount": 1,
+              "currency": "PLN",
+              "wallet_amount": 1,
+              "wallet_currency": "PLN",
+              "created_at": "2025-01-20T13:17:31+01:00",
+              "updated_at": "2025-01-20T13:17:59+01:00"
+            }
+          ]
+        }
+      },
+      "paymentShowTransactionRefundResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Request status"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "id",
+              "status",
+              "amount",
+              "currency",
+              "wallet_amount",
+              "wallet_currency",
+              "created_at",
+              "updated_at"
+            ],
+            "properties": {
+              "id": {
+                "$ref": "#/components/schemas/RefundId"
+              },
+              "status": {
+                "$ref": "#/components/schemas/paymentTransactionRefundStatus"
+              },
+              "amount": {
+                "type": "number",
+                "format": "float",
+                "description": "Kwota zwrotu w walucie płacącego"
+              },
+              "currency": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3,
+                "description": "Waluta płacącego"
+              },
+              "wallet_amount": {
+                "type": "number",
+                "format": "float",
+                "description": "Kwota zwrotu pobrana z portfela"
+              },
+              "wallet_currency": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3,
+                "description": "Waluta portfela"
+              },
+              "created_at": {
+                "$ref": "#/components/schemas/DateTime"
+              },
+              "updated_at": {
+                "$ref": "#/components/schemas/DateTime"
+              }
+            }
+          }
+        },
+        "example": {
+          "success": true,
+          "data": {
+            "id": "019483a5-885e-70f7-9b5b-94387a6690da",
+            "status": "refund_completed",
+            "amount": 1,
+            "currency": "PLN",
+            "wallet_amount": 1,
+            "wallet_currency": "PLN",
+            "created_at": "2025-01-20T13:17:31+01:00",
+            "updated_at": "2025-01-20T13:17:59+01:00"
+          }
+        }
+      },
+      "paymentMakeTransactionRefundResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Request status"
+          },
+          "data": {
+            "type": "object",
+            "required": [
+              "refund_id"
+            ],
+            "properties": {
+              "refund_id": {
+                "$ref": "#/components/schemas/RefundId"
+              }
+            }
+          }
+        },
+        "example": {
+          "success": true,
+          "data": {
+            "refund_id": "019483a5-885e-70f7-9b5b-94387a6690da"
+          }
+        }
+      },
+      "paymentGetSubscriptionsResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "data",
+          "pagination"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Request status"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "status",
+                "mode",
+                "created_at",
+                "updated_at"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/SubscriptionId"
+                },
+                "status": {
+                  "$ref": "#/components/schemas/subscriptionStatus"
+                },
+                "mode": {
+                  "$ref": "#/components/schemas/subscriptionMode"
+                },
+                "blik": {
+                  "type": "object",
+                  "required": [
+                    "model",
+                    "alias"
+                  ],
+                  "properties": {
+                    "model": {
+                      "$ref": "#/components/schemas/blikSubscriptionModel"
+                    },
+                    "alias": {
+                      "type": "object",
+                      "required": [
+                        "id",
+                        "type",
+                        "value",
+                        "label",
+                        "status",
+                        "created_at",
+                        "updated_at"
+                      ],
+                      "properties": {
+                        "id": {
+                          "$ref": "#/components/schemas/AliasId"
+                        },
+                        "type": {
+                          "$ref": "#/components/schemas/blikAliasType"
+                        },
+                        "value": {
+                          "type": "string",
+                          "description": "Wartość aliasu",
+                          "example": "AABBCC",
+                          "maxLength": 64
+                        },
+                        "label": {
+                          "type": "string",
+                          "description": "Etykieta wyświetlana w aplikacji mobilnej",
+                          "example": "Płatność za pakiet premium w serwisie aaa",
+                          "maxLength": 35
+                        },
+                        "blik_key": {
+                          "type": "string",
+                          "description": "Identyfikator aliasu w BLIK (w przypadku aliasu PAYID będzie pusty)",
+                          "nullable": true,
+                          "example": null
+                        },
+                        "status": {
+                          "$ref": "#/components/schemas/blikAliasStatus"
+                        },
+                        "expires_at": {
+                          "$ref": "#/components/schemas/DateTime"
+                        },
+                        "created_at": {
+                          "$ref": "#/components/schemas/DateTime"
+                        },
+                        "updated_at": {
+                          "$ref": "#/components/schemas/DateTime"
+                        }
+                      }
+                    }
+                  }
+                },
+                "frequency": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Częstotliwość subskrypcji",
+                  "example": "1M"
+                },
+                "initiation_date": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Data pierwszej możliwej Płatności Powtarzalnej",
+                  "example": "2025-08-13T23:15:13+02:00"
+                },
+                "total_amount_limit": {
+                  "type": "number",
+                  "nullable": true,
+                  "description": "Całkowita kwota, która jest dla tej Płatności Powtarzalnej",
+                  "example": 4000
+                },
+                "total_transactions_limit": {
+                  "type": "integer",
+                  "nullable": true,
+                  "description": "Całkowita ilość możliwych transakcji dla Płatności Powtarzalnej",
+                  "example": 12
+                },
+                "cancelled": {
+                  "type": "object",
+                  "nullable": true,
+                  "required": [
+                    "by"
+                  ],
+                  "properties": {
+                    "by": {
+                      "$ref": "#/components/schemas/subscriptionCancelledBy"
+                    },
+                    "reason": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Powód anulowania subskrypcji",
+                      "maxLength": 32
+                    }
+                  }
+                },
+                "created_at": {
+                  "$ref": "#/components/schemas/DateTime"
+                },
+                "updated_at": {
+                  "$ref": "#/components/schemas/DateTime"
+                }
+              }
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          }
+        },
+        "example": {
+          "success": true,
+          "data": [
+            {
+              "id": "019970c6-3d3e-708c-9313-5f89e251e2c0",
+              "status": "subscription_active",
+              "mode": "BLIK",
+              "blik": {
+                "model": "O",
+                "alias": {
+                  "id": "019970c6-3ce8-71e7-8214-20fd635532fb",
+                  "type": "PAYID",
+                  "value": "AABBCC",
+                  "label": "Płatność za pakiet premium",
+                  "blik_key": null,
+                  "status": "alias_active",
+                  "expires_at": "2035-07-15T00:00:00+02:00",
+                  "created_at": "2025-09-22T11:34:23+02:00",
+                  "updated_at": "2025-09-22T11:34:32+02:00"
+                }
+              },
+              "frequency": null,
+              "initiation_date": null,
+              "total_amount_limit": null,
+              "total_transactions_limit": null,
+              "cancelled": null,
+              "created_at": "2025-09-22T11:34:24+02:00",
+              "updated_at": "2025-09-22T11:34:32+02:00"
+            },
+            {
+              "id": "0198a54d-05e1-72b8-b835-f2258609bb52",
+              "status": "subscription_cancelled",
+              "mode": "BLIK",
+              "blik": {
+                "model": "O",
+                "alias": {
+                  "id": "0198a54d-05d9-7177-9ac6-5d9831bc988d",
+                  "type": "PAYID",
+                  "value": "CCBBAA",
+                  "label": "Subskrypcja za muzykę",
+                  "blik_key": null,
+                  "status": "alias_unregistered",
+                  "expires_at": null,
+                  "created_at": "2025-08-13T23:19:05+02:00",
+                  "updated_at": "2025-08-13T23:19:16+02:00"
+                }
+              },
+              "frequency": "1M",
+              "initiation_date": "2025-08-13T23:15:13+02:00",
+              "total_amount_limit": null,
+              "total_transactions_limit": null,
+              "cancelled": {
+                "by": "merchant",
+                "reason": "Rezygnacja przez użytkownika"
+              },
+              "created_at": "2025-08-13T23:19:05+02:00",
+              "updated_at": "2025-08-13T23:19:16+02:00"
+            }
+          ],
+          "pagination": {
+            "total": 2,
+            "count": 2,
+            "per_page": 20,
+            "current_page": 1,
+            "total_pages": 1,
+            "links": {
+              "next_page": null,
+              "prev_page": null
+            }
+          }
+        }
+      },
+      "paymentGetBlikAliasesResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "data",
+          "pagination"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Request status"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "type",
+                "value",
+                "label",
+                "status",
+                "created_at",
+                "updated_at"
+              ],
+              "properties": {
+                "id": {
+                  "$ref": "#/components/schemas/AliasId"
+                },
+                "type": {
+                  "$ref": "#/components/schemas/blikAliasType"
+                },
+                "value": {
+                  "type": "string",
+                  "description": "Wartość aliasu",
+                  "example": "AABBCC",
+                  "maxLength": 64
+                },
+                "label": {
+                  "type": "string",
+                  "description": "Etykieta wyświetlana w aplikacji mobilnej",
+                  "example": "Płatność za pakiet premium w serwisie aaa",
+                  "maxLength": 35
+                },
+                "blik_key": {
+                  "type": "string",
+                  "description": "Identyfikator aliasu w BLIK (w przypadku aliasu PAYID będzie pusty)",
+                  "nullable": true,
+                  "example": null
+                },
+                "status": {
+                  "$ref": "#/components/schemas/blikAliasStatus"
+                },
+                "expires_at": {
+                  "$ref": "#/components/schemas/DateTime"
+                },
+                "created_at": {
+                  "$ref": "#/components/schemas/DateTime"
+                },
+                "updated_at": {
+                  "$ref": "#/components/schemas/DateTime"
+                },
+                "subscription": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "status",
+                    "mode",
+                    "created_at",
+                    "updated_at"
+                  ],
+                  "properties": {
+                    "id": {
+                      "$ref": "#/components/schemas/SubscriptionId"
+                    },
+                    "status": {
+                      "$ref": "#/components/schemas/subscriptionStatus"
+                    },
+                    "mode": {
+                      "$ref": "#/components/schemas/subscriptionMode"
+                    },
+                    "blik": {
+                      "type": "object",
+                      "required": [
+                        "model"
+                      ],
+                      "properties": {
+                        "model": {
+                          "$ref": "#/components/schemas/blikSubscriptionModel"
+                        }
+                      }
+                    },
+                    "frequency": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Częstotliwość subskrypcji",
+                      "example": "1M"
+                    },
+                    "initiation_date": {
+                      "type": "string",
+                      "nullable": true,
+                      "description": "Data pierwszej możliwej Płatności Powtarzalnej",
+                      "example": "2025-08-13T23:15:13+02:00"
+                    },
+                    "total_amount_limit": {
+                      "type": "number",
+                      "nullable": true,
+                      "description": "Całkowita kwota, która jest dla tej Płatności Powtarzalnej",
+                      "example": 4000
+                    },
+                    "total_transactions_limit": {
+                      "type": "integer",
+                      "nullable": true,
+                      "description": "Całkowita ilość możliwych transakcji dla Płatności Powtarzalnej",
+                      "example": 12
+                    },
+                    "cancelled": {
+                      "type": "object",
+                      "nullable": true,
+                      "required": [
+                        "by"
+                      ],
+                      "properties": {
+                        "by": {
+                          "$ref": "#/components/schemas/subscriptionCancelledBy"
+                        },
+                        "reason": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Powód anulowania subskrypcji",
+                          "maxLength": 32
+                        }
+                      }
+                    },
+                    "created_at": {
+                      "$ref": "#/components/schemas/DateTime"
+                    },
+                    "updated_at": {
+                      "$ref": "#/components/schemas/DateTime"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "pagination": {
+            "$ref": "#/components/schemas/Pagination"
+          }
+        },
+        "example": {
+          "success": true,
+          "data": [
+            {
+              "id": "019970c6-3ce8-71e7-8214-20fd635532fb",
+              "type": "PAYID",
+              "value": "AABBCC",
+              "label": "Płatność za pakiet premium",
+              "blik_key": null,
+              "status": "alias_active",
+              "expires_at": "2035-07-15T00:00:00+02:00",
+              "created_at": "2025-09-22T11:34:23+02:00",
+              "updated_at": "2025-09-22T11:34:32+02:00",
+              "subscription": {
+                "id": "019970c6-3d3e-708c-9313-5f89e251e2c0",
+                "status": "subscription_active",
+                "mode": "BLIK",
+                "blik": {
+                  "model": "O"
+                },
+                "frequency": null,
+                "initiation_date": null,
+                "total_amount_limit": null,
+                "total_transactions_limit": null,
+                "cancelled": null,
+                "created_at": "2025-09-22T11:34:24+02:00",
+                "updated_at": "2025-09-22T11:34:32+02:00"
+              }
+            },
+            {
+              "id": "0198a54d-05d9-7177-9ac6-5d9831bc988d",
+              "type": "PAYID",
+              "value": "CCBBAA",
+              "label": "Subskrypcja za muzykę",
+              "blik_key": null,
+              "status": "alias_unregistered",
+              "expires_at": null,
+              "created_at": "2025-08-13T23:19:05+02:00",
+              "updated_at": "2025-08-13T23:19:16+02:00",
+              "subscription": {
+                "id": "0198a54d-05e1-72b8-b835-f2258609bb52",
+                "status": "subscription_cancelled",
+                "mode": "BLIK",
+                "blik": {
+                  "model": "O"
+                },
+                "frequency": "1M",
+                "initiation_date": "2025-08-13T23:15:13+02:00",
+                "total_amount_limit": null,
+                "total_transactions_limit": null,
+                "cancelled": {
+                  "by": "merchant",
+                  "reason": "Rezygnacja przez użytkownika"
+                },
+                "created_at": "2025-08-13T23:19:05+02:00",
+                "updated_at": "2025-08-13T23:19:16+02:00"
+              }
+            }
+          ],
+          "pagination": {
+            "total": 2,
+            "count": 2,
+            "per_page": 20,
             "current_page": 1,
             "total_pages": 1,
             "links": {
@@ -2996,6 +4838,45 @@
                 "type": "string",
                 "format": "email",
                 "maxLength": 64
+              },
+              "ip": {
+                "type": "string",
+                "format": "ip",
+                "description": "Adres IP kupującego. Wymagany przy używaniu directChannel."
+              },
+              "countryCode": {
+                "type": "string",
+                "format": "country",
+                "description": "Kod ISO kupującego. Wymagany przy używaniu directChannel.",
+                "example": "PL"
+              }
+            }
+          },
+          "antifraud": {
+            "type": "object",
+            "nullable": true,
+            "description": "Obiekt informacji do antifrauda",
+            "properties": {
+              "useragent": {
+                "type": "string",
+                "description": "UserAgent kupującego. Wymagany przy używaniu directChannel.",
+                "maxLength": 255
+              },
+              "steamid": {
+                "type": "integer",
+                "format": "int64",
+                "description": "STEAMID64 kupującego",
+                "maxLength": 64
+              },
+              "mcusername": {
+                "type": "string",
+                "description": "Nick gracza Minecraft",
+                "maxLength": 64
+              },
+              "mcid": {
+                "type": "string",
+                "description": "UUID gracza Minecraft",
+                "maxLength": 64
               }
             }
           },
@@ -3028,7 +4909,7 @@
           },
           "directChannel": {
             "type": "string",
-            "description": "W tym polu można przesłać Id kanału, wtedy płacący zostanie przekierowany od razu na stronę podanego kanału\nnp. przy podaniu `blik` zostanie przekierowany od razu na bramkę płatności BLIK\n"
+            "description": "W tym polu można przesłać Id kanału, wtedy płacący zostanie przekierowany od razu na stronę podanego kanału\nnp. przy podaniu `blik` zostanie przekierowany od razu na bramkę płatności BLIK. Wymagane jest wtedy przesłanie `antifraud.useragent` oraz `customer.ip`.\n"
           },
           "channels": {
             "type": "array",
@@ -3044,19 +4925,32 @@
             "description": "Obiekt w którym możemy zdefiniować które typu kanłów mają być dostępne na bramce płatności\n",
             "properties": {
               "blik": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Płatność BLIK"
               },
               "transfer": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Płatności przelewami online"
               },
               "cards": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Płatności kartami"
               },
               "ewallets": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Płatności wirtualnymi portfelami (Google Pay, Apple Pay)"
               },
               "paypal": {
-                "type": "boolean"
+                "type": "boolean",
+                "description": "Płatność PayPal"
+              },
+              "paysafe": {
+                "type": "boolean",
+                "description": "Płatności od grupy Paysafe (Skrill, PaysafeCard)"
+              },
+              "latam": {
+                "type": "boolean",
+                "description": "Płatności Ameryki Południowej (PIX, Boleto, BoletoFlash)"
               }
             }
           },
@@ -3064,6 +4958,75 @@
             "type": "string",
             "minLength": 6,
             "maxLength": 64
+          },
+          "context": {
+            "type": "object",
+            "nullable": true,
+            "description": "Obiekt z dodatkowymi danymi przekazywanymi do kanału płatności (zalecane dla Twisto)",
+            "properties": {
+              "accountCreatedAt": {
+                "type": "string",
+                "format": "DateTime",
+                "nullable": true,
+                "description": "Data utworzenia konta kupującego w formacie ISO 8601",
+                "example": "2026-03-27T14:55:33+01:00"
+              },
+              "salesTotalCount": {
+                "type": "integer",
+                "nullable": true,
+                "description": "Ilość transakcji kupującego zrealizowanych przed tą transakcją",
+                "example": 27
+              },
+              "salesTotalAmount": {
+                "type": "number",
+                "nullable": true,
+                "description": "Łączna kwota wszystkich transakcji kupującego zrealizowanych przed tą transakcją",
+                "example": 1234.56
+              },
+              "salesAvgAmount": {
+                "type": "number",
+                "nullable": true,
+                "description": "Średnia kwota transakcji kupującego zrealizowanych przed tą transakcją",
+                "example": 123.45
+              },
+              "salesMaxAmount": {
+                "type": "number",
+                "nullable": true,
+                "description": "Maksymalna kwota transakcji kupującego zrealizowanych przed tą transakcją",
+                "example": 500
+              },
+              "refundsTotalAmount": {
+                "type": "number",
+                "nullable": true,
+                "description": "Łączna kwota wszystkich zwrotów kupującego zrealizowanych przed tą transakcją",
+                "example": 0
+              },
+              "previousChargeback": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Czy kupujący miał wcześniej chargebacki",
+                "example": false
+              },
+              "accountSetCurrency": {
+                "type": "string",
+                "nullable": true,
+                "description": "Ustawiona waluta konta kupującego",
+                "example": "PLN"
+              },
+              "lastLoginAt": {
+                "type": "string",
+                "format": "DateTime",
+                "nullable": true,
+                "description": "Data ostatniego logowania kupującego na konto w sklepie",
+                "example": "2026-03-20T14:55:33+01:00"
+              },
+              "hasPreviousPurchases": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Czy kupujący dokonywał wcześniej zakupu w sklepie?",
+                "example": true
+              }
+            }
           }
         }
       },
@@ -3118,15 +5081,16 @@
             "type": "object",
             "required": [
               "id",
+              "payer_transaction_id",
               "status",
               "amount",
               "channel",
               "control",
               "description",
-              "redirects",
+              "redirect",
               "customer",
-              "customer_billing",
-              "customer_shipping",
+              "billing",
+              "shipping",
               "cart",
               "paid_at",
               "expires_at",
@@ -3137,6 +5101,10 @@
               "id": {
                 "$ref": "#/components/schemas/TransactionId"
               },
+              "payer_transaction_id": {
+                "type": "string",
+                "description": "Identyfikator transakcji udostępniony płacącemu"
+              },
               "status": {
                 "$ref": "#/components/schemas/paymentTransactionStatus"
               },
@@ -3145,21 +5113,54 @@
                 "required": [
                   "value",
                   "currency",
-                  "commission"
+                  "commission",
+                  "commission_currency"
                 ],
                 "properties": {
                   "value": {
                     "type": "number",
-                    "format": "float"
+                    "format": "float",
+                    "description": "Kwota płatności w walucie kupującego"
                   },
                   "currency": {
                     "type": "string",
-                    "format": "ISO-4217"
+                    "format": "ISO-4217",
+                    "description": "Waluta kupującego"
                   },
                   "commission": {
                     "type": "number",
                     "format": "float",
-                    "nullable": true
+                    "nullable": true,
+                    "description": "Kwota prowizji dla SimPay"
+                  },
+                  "commission_currency": {
+                    "type": "string",
+                    "format": "ISO-4217",
+                    "description": "Waluta prowizji (PLN/EUR)"
+                  },
+                  "original": {
+                    "type": "object",
+                    "description": "Oryginalne kwoty zadeklarowane przy inicjacji",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true,
+                        "description": "Kwota płatności"
+                      },
+                      "currency": {
+                        "type": "string",
+                        "format": "ISO-4217",
+                        "nullable": true,
+                        "description": "Waluta płatności"
+                      },
+                      "pln_rate": {
+                        "type": "number",
+                        "format": "float",
+                        "nullable": true,
+                        "description": "Kurs NBP waluty"
+                      }
+                    }
                   }
                 }
               },
@@ -3175,7 +5176,7 @@
                 "type": "string",
                 "nullable": true
               },
-              "redirects": {
+              "redirect": {
                 "type": "object",
                 "required": [
                   "success",
@@ -3208,6 +5209,16 @@
                   "email": {
                     "type": "string",
                     "format": "email",
+                    "nullable": true
+                  },
+                  "ip": {
+                    "type": "string",
+                    "format": "ip",
+                    "nullable": true
+                  },
+                  "country": {
+                    "type": "string",
+                    "format": "CountryCode",
                     "nullable": true
                   }
                 }
@@ -3244,22 +5255,31 @@
           "success": true,
           "data": {
             "id": "328bd42d-d08b-43f6-9463-869e5bd32b4",
+            "payer_transaction_id": "477YDX14",
             "status": "transaction_paid",
             "amount": {
-              "value": 19.99,
-              "currency": "PLN",
-              "commission": 0.98
+              "value": 7.55,
+              "currency": "BRL",
+              "commission": 0.12,
+              "commission_currency": "EUR",
+              "original": {
+                "value": 5,
+                "currency": "PLN",
+                "pln_rate": 1
+              }
             },
             "channel": "nest",
             "control": null,
             "description": null,
-            "redirects": {
+            "redirect": {
               "success": null,
               "failure": null
             },
             "customer": {
               "name": null,
-              "email": "kontakt@simpay.pl"
+              "email": "kontakt@simpay.pl",
+              "ip": "192.168.0.1",
+              "country": "PL"
             },
             "billing": {
               "name": null,
@@ -3288,8 +5308,453 @@
             "cart": null,
             "paid_at": "2023-12-07T05:21:50+01:00",
             "expires_at": null,
-            "created_at": "023-12-07T05:20:30+01:00",
+            "created_at": "2023-12-07T05:20:30+01:00",
             "updated_at": "2023-12-07T05:21:50+01:00"
+          }
+        }
+      },
+      "paymentGetCurrenciesResponse": {
+        "type": "object",
+        "required": [
+          "success",
+          "data"
+        ],
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "Request status"
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "iso",
+                "pln_rate",
+                "nbp_table",
+                "updated_at"
+              ],
+              "properties": {
+                "iso": {
+                  "type": "string",
+                  "description": "Kod ISO waluty (PLN, USD, EUR, BRL etc.)"
+                },
+                "pln_rate": {
+                  "type": "string",
+                  "description": "Kurs waluty według kursu NBP"
+                },
+                "nbp_table": {
+                  "type": "string",
+                  "description": "Tabela do kursu NBP"
+                },
+                "prefix": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Prefiks waluty"
+                },
+                "suffix": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Sufiks waluty"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Data ostatniej aktualizacji waluty"
+                }
+              }
+            }
+          }
+        },
+        "example": {
+          "success": true,
+          "data": [
+            {
+              "iso": "PLN",
+              "pln_rate": "1.0000000000",
+              "nbp_table": "A",
+              "prefix": null,
+              "suffix": " zł",
+              "updated_at": "2025-05-10T13:04:32+02:00"
+            },
+            {
+              "iso": "EUR",
+              "pln_rate": "4.3238000000",
+              "nbp_table": "A",
+              "prefix": "€",
+              "suffix": null,
+              "updated_at": "2025-05-10T13:04:32+02:00"
+            },
+            {
+              "iso": "ARS",
+              "pln_rate": "0.0034150000",
+              "nbp_table": "B",
+              "prefix": "ARS$",
+              "suffix": null,
+              "updated_at": "2025-05-10T13:04:32+02:00"
+            }
+          ]
+        }
+      },
+      "paymentBlik0TransactionRequest": {
+        "type": "object",
+        "required": [
+          "ticket"
+        ],
+        "properties": {
+          "ticket": {
+            "type": "object",
+            "nullable": false,
+            "description": "Obiekt kodu BLIK",
+            "required": [
+              "T6"
+            ],
+            "properties": {
+              "T6": {
+                "type": "string",
+                "maxLength": 6,
+                "minLength": 6,
+                "description": "6-cyfrowy Kod BLIK"
+              }
+            }
+          }
+        },
+        "example": {
+          "ticket": {
+            "T6": "123123"
+          }
+        }
+      },
+      "paymentBlikSubscriptionCreateRequest": {
+        "type": "object",
+        "required": [
+          "transactionId",
+          "ticket",
+          "alias",
+          "options"
+        ],
+        "properties": {
+          "transactionId": {
+            "$ref": "#/components/schemas/TransactionId"
+          },
+          "ticket": {
+            "type": "object",
+            "nullable": false,
+            "description": "Obiekt kodu BLIK",
+            "required": [
+              "T6"
+            ],
+            "properties": {
+              "T6": {
+                "type": "string",
+                "maxLength": 6,
+                "minLength": 6,
+                "description": "6-cyfrowy Kod BLIK"
+              }
+            },
+            "example": {
+              "T6": "462755"
+            }
+          },
+          "alias": {
+            "type": "object",
+            "nullable": false,
+            "description": "Informacje o Aliasie BLIK",
+            "required": [
+              "value",
+              "type"
+            ],
+            "properties": {
+              "value": {
+                "type": "string",
+                "maxLength": 64,
+                "minLength": 1,
+                "description": "Wartość aliasu (np. ID subskrypcji)"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "PAYID"
+                ],
+                "description": "Typ aliasu (dla subskrypcji - PAYID)"
+              },
+              "label": {
+                "type": "string",
+                "maxLength": 35,
+                "minLength": 1,
+                "description": "Etykieta widoczna w aplikacji bankowej płacącego"
+              }
+            },
+            "example": {
+              "value": "AAABBCC",
+              "type": "PAYID",
+              "label": "Płatność za plan premium w serwisie aaa"
+            }
+          },
+          "options": {
+            "oneOf": [
+              {
+                "type": "object",
+                "title": "Model A",
+                "description": "Opcje dla modelu A",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "A"
+                    ]
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "datetime",
+                    "description": "Data wygaśnięcia aliasu, max +10 lat"
+                  },
+                  "frequency": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 4,
+                    "description": "Częstotliwość subskrypcji"
+                  },
+                  "amountLimitPerTransaction": {
+                    "type": "number",
+                    "minimum": 1,
+                    "maximum": 4000,
+                    "description": "Limit kwoty na pojedynczą transakcję"
+                  },
+                  "initiationDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data pierwszej dozwolonej Płatności Powtarzalnej"
+                  },
+                  "amountLimitTotal": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Całościowy limit kwoty subskrypcji"
+                  },
+                  "transactionsCountLimit": {
+                    "type": "number",
+                    "minimum": 1,
+                    "description": "Limit ilościowy Płatności Powtarzalnych w ramach jednego aliasu"
+                  }
+                },
+                "required": [
+                  "model",
+                  "expiresAt",
+                  "frequency",
+                  "amountLimitPerTransaction",
+                  "initiationDate",
+                  "amountLimitTotal"
+                ],
+                "example": {
+                  "model": "A",
+                  "expiresAt": "2030-09-22",
+                  "frequency": "30D",
+                  "amountLimitPerTransaction": 30,
+                  "initiationDate": "2025-09-22",
+                  "amountLimitTotal": 30000
+                }
+              },
+              {
+                "type": "object",
+                "title": "Model O",
+                "description": "Opcje dla modelu O",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "O"
+                    ]
+                  },
+                  "initiationDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data pierwszej dozwolonej Płatności Powtarzalnej"
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "datetime",
+                    "description": "Data wygaśnięcia aliasu, max +10 lat"
+                  }
+                },
+                "required": [
+                  "model"
+                ],
+                "example": {
+                  "model": "O",
+                  "expiresAt": "2030-09-22",
+                  "initiationDate": "2025-09-22"
+                }
+              },
+              {
+                "type": "object",
+                "title": "Model M",
+                "description": "Opcje dla modelu M",
+                "properties": {
+                  "model": {
+                    "type": "string",
+                    "enum": [
+                      "M"
+                    ]
+                  },
+                  "frequency": {
+                    "type": "string",
+                    "minLength": 2,
+                    "maxLength": 4,
+                    "description": "Częstotliwość subskrypcji"
+                  },
+                  "expiresAt": {
+                    "type": "string",
+                    "format": "datetime",
+                    "description": "Data wygaśnięcia aliasu, max +10 lat"
+                  },
+                  "initiationDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Data pierwszej dozwolonej Płatności Powtarzalnej"
+                  }
+                },
+                "required": [
+                  "model"
+                ],
+                "example": {
+                  "model": "O",
+                  "expiresAt": "2030-09-22",
+                  "initiationDate": "2025-09-22",
+                  "frequency": "30D"
+                }
+              }
+            ]
+          },
+          "descriptions": {
+            "type": "object",
+            "nullable": true,
+            "description": "Dodatkowe opisy przekazywane do banku płacącego",
+            "properties": {
+              "line1": {
+                "type": "string",
+                "nullable": true,
+                "description": "Linijka nr 1",
+                "maxLength": 35
+              },
+              "line2": {
+                "type": "string",
+                "nullable": true,
+                "description": "Linijka nr 2",
+                "maxLength": 35
+              },
+              "line3": {
+                "type": "string",
+                "nullable": true,
+                "description": "Linijka nr 3",
+                "maxLength": 35
+              }
+            }
+          }
+        }
+      },
+      "paymentBlikAliasUnregisterRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "reason": {
+            "type": "string",
+            "maxLength": 20,
+            "nullable": true,
+            "description": "Powód wyrejestrowania - zostanie wysłany do BLIK oraz płacącego"
+          }
+        },
+        "oneOf": [
+          {
+            "type": "object",
+            "title": "Wyrejestrowanie przez ID aliasu SimPay",
+            "required": [
+              "uuid"
+            ],
+            "properties": {
+              "uuid": {
+                "$ref": "#/components/schemas/AliasId"
+              }
+            }
+          },
+          {
+            "type": "object",
+            "title": "Wyrejestrowanie przez value + type aliasu",
+            "required": [
+              "value",
+              "type"
+            ],
+            "properties": {
+              "value": {
+                "type": "string",
+                "maxLength": 64,
+                "nullable": false,
+                "description": "Wartość aliasu"
+              },
+              "type": {
+                "$ref": "#/components/schemas/blikAliasType"
+              }
+            }
+          }
+        ]
+      },
+      "paymentBlikSubscriptionExecuteAutoPaymentRequest": {
+        "type": "object",
+        "required": [
+          "transactionId"
+        ],
+        "properties": {
+          "transactionId": {
+            "$ref": "#/components/schemas/TransactionId"
+          },
+          "attempt": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Numer ponowienia Płatności Powtarzalnej",
+            "minimum": 0,
+            "maximum": 9
+          },
+          "descriptions": {
+            "type": "object",
+            "nullable": true,
+            "description": "Dodatkowe opisy przekazywane do banku płacącego",
+            "properties": {
+              "line1": {
+                "type": "string",
+                "nullable": true,
+                "description": "Linijka nr 1",
+                "maxLength": 35
+              },
+              "line2": {
+                "type": "string",
+                "nullable": true,
+                "description": "Linijka nr 2",
+                "maxLength": 35
+              },
+              "line3": {
+                "type": "string",
+                "nullable": true,
+                "description": "Linijka nr 3",
+                "maxLength": 35
+              }
+            }
+          },
+          "alias": {
+            "type": "object",
+            "nullable": true,
+            "description": "Informacje do aliasu",
+            "properties": {
+              "label": {
+                "type": "string",
+                "nullable": true,
+                "maxLength": 35,
+                "description": "Nowa wartość etykiety subskrypcji widoczna w aplikacji bankowej płacącego"
+              },
+              "noDelay": {
+                "type": "boolean",
+                "nullable": true,
+                "description": "Flaga noDelay (zobacz więcej w zakładce BLIK Płatności Powtarzalne)"
+              }
+            }
           }
         }
       },
@@ -3389,86 +5854,7 @@
         }
       },
       "paymentTransactionNotification": {
-        "type": "object",
-        "required": [
-          "id",
-          "serviceId",
-          "status",
-          "amount",
-          "channel",
-          "environment",
-          "signature"
-        ],
-        "properties": {
-          "id": {
-            "$ref": "#/components/schemas/TransactionId"
-          },
-          "serviceId": {
-            "$ref": "#/components/schemas/ServiceId"
-          },
-          "status": {
-            "$ref": "#/components/schemas/paymentTransactionStatus"
-          },
-          "amount": {
-            "type": "object",
-            "description": "Obiekt rozliczeniowy",
-            "required": [
-              "value",
-              "currency",
-              "commission"
-            ],
-            "properties": {
-              "value": {
-                "type": "number",
-                "format": "float",
-                "description": "Kwota transakcji"
-              },
-              "currency": {
-                "type": "string",
-                "description": "Waluta transakcji"
-              },
-              "commission": {
-                "type": "number",
-                "format": "float",
-                "description": "Kwota prowizji pobranej przez simpay"
-              }
-            }
-          },
-          "control": {
-            "type": "string",
-            "description": "Pole do wykorzystania przez partnera"
-          },
-          "channel": {
-            "type": "string",
-            "description": "Kanał płatności",
-            "example": "blik"
-          },
-          "environment": {
-            "type": "string",
-            "enum": [
-              "production",
-              "test"
-            ]
-          },
-          "signature": {
-            "type": "string",
-            "description": "Sygnatura notyfikacji [Przeczytaj jak wygenerować sygnature](#tag/Payment/Sygnatura/Obliczanie-sygnatury-przy-odbieraniu-notyfikacji)<br/>\nPartner ma obowiązek weryfikować sygnaturę przy otrzymaniu powiadomienia, można też wykonać request do endpointu [Pobieranie szczegółów transakcji](#tag/Payment/operation/paymentGetTransaction)\n"
-          }
-        },
-        "example": {
-          "id": "dc261d4f-31ef-4728-bfd6-97bbe2a5ef0a",
-          "serviceId": "e14f8074",
-          "status": "transaction_paid",
-          "amount": {
-            "value": 10,
-            "currency": "PLN",
-            "commission": 9.9
-          },
-          "control": "88643ada8857f25a1f391395f922f7db",
-          "channel": "blik",
-          "environment": "production",
-          "signature": "a3116cf4f1e960223c2cc3088bf387278b6675255209bdeaf96a2f316a2fadc1"
-        }
+        "type": "object"
       }
     },
     "responses": {

@@ -184,7 +184,7 @@ final class PaymentApiTest extends BaseTestCase
     {
         $this->client->expects($this->once())
             ->method('request')
-            ->with('GET', 'payment/services')
+            ->with('GET', 'payment')
             ->willReturn($this->mockResponse(
                 [
                     'status' => 'success',
@@ -215,7 +215,7 @@ final class PaymentApiTest extends BaseTestCase
     {
         $this->client->expects($this->once())
             ->method('request')
-            ->with('GET', \sprintf('payment/services/%s', $serviceId),)
+            ->with('GET', \sprintf('payment/%s', $serviceId),)
             ->willReturn($this->mockResponse(
                 [
                     'status' => 'success',
@@ -233,7 +233,7 @@ final class PaymentApiTest extends BaseTestCase
     {
         $this->client->expects($this->once())
             ->method('request')
-            ->with('GET', \sprintf('payment/services/%s/transactions', $serviceId))
+            ->with('GET', \sprintf('payment/%s/transactions', $serviceId))
             ->willReturn($this->mockResponse(
                 [
                     'status' => 'success',
@@ -307,7 +307,7 @@ final class PaymentApiTest extends BaseTestCase
             ->method('request')
             ->with(
                 'POST',
-                \sprintf('payment/%s/transaction', $serviceId),
+                \sprintf('payment/%s/transactions', $serviceId),
                 [
                     'json' => [
                         'amount' => 23.23,
@@ -317,6 +317,8 @@ final class PaymentApiTest extends BaseTestCase
                         'customer' => [
                             'name' => 'Default customer',
                             'email' => 'jhondoe@example.com',
+                            'ip' => null,
+                            'countryCode' => null,
                         ],
                         'billing' => [
                             'name' => 'billing name',
@@ -356,7 +358,7 @@ final class PaymentApiTest extends BaseTestCase
                             'success' => 'https://example.com/success',
                             'failure' => 'https://example.com/failure',
                         ],
-                        'direct_channel' => 'direct_channel',
+                        'directChannel' => 'direct_channel',
                         'channels' => ['test_channel_id', 'test_channel_id_2'],
                         'channelTypes' => [
                             'blik' => true,
@@ -375,8 +377,8 @@ final class PaymentApiTest extends BaseTestCase
                 [
                     'status' => 'success',
                     'data' => [
-                        'transaction_id' => 'test_transaction_id',
-                        'redirect_url' => 'https://example.com',
+                        'transactionId' => 'test_transaction_id',
+                        'redirectUrl' => 'https://example.com',
                     ],
                 ],
             ));
@@ -386,7 +388,7 @@ final class PaymentApiTest extends BaseTestCase
     {
         $this->client->expects($this->once())
             ->method('request')
-            ->with('GET', \sprintf('payment/%s/transaction/%s', $serviceId, $transactionId))
+            ->with('GET', \sprintf('payment/%s/transactions/%s', $serviceId, $transactionId))
             ->willReturn($this->mockResponse(
                 [
                     'status' => 'success',
@@ -401,7 +403,7 @@ final class PaymentApiTest extends BaseTestCase
                         'channel' => 'nest',
                         'control' => 'test_control',
                         'description' => 'test_description',
-                        'redirects' => [
+                        'redirect' => [
                             'success' => 'https://example.com/success',
                             'failure' => 'https://example.com/failure',
                         ],

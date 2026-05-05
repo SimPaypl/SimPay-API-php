@@ -68,5 +68,29 @@
     },
     "autoload-dev": {
         "psr-4": { "Simpay\\Test\\" : "tests/" }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "test:coverage": "phpunit --colors=always --coverage-text --coverage-html=build/coverage",
+        "phpstan": "phpstan analyse --ansi --no-progress --configuration phpstan.neon --memory-limit=1G",
+        "ecs": "ecs check --ansi --config ecs.php",
+        "ecs:fix": "ecs check --ansi --config ecs.php --fix",
+        "rector": "rector --ansi --dry-run",
+        "rector:fix": "rector --ansi",
+        "lint": [
+            "@ecs",
+            "@rector",
+            "@phpstan"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Run the PHPUnit test suite",
+        "test:coverage": "Run tests and produce HTML coverage report in build/coverage",
+        "phpstan": "Run static analysis (PHPStan)",
+        "ecs": "Check coding style (Easy Coding Standard)",
+        "ecs:fix": "Auto-fix coding style violations",
+        "rector": "Preview Rector refactorings (dry-run)",
+        "rector:fix": "Apply Rector refactorings",
+        "lint": "Run all linters: ECS, Rector (dry-run), PHPStan"
     }
 }
