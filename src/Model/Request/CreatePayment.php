@@ -25,6 +25,7 @@ class CreatePayment implements RequestInterface
     private ?array $channels;
     private ?ChannelType $channelType;
     private ?Referer $referer;
+    private ?Antifraud $antifraud;
 
     public function __construct(
         Amount $amount,
@@ -39,7 +40,8 @@ class CreatePayment implements RequestInterface
         ?CallbackReturnUrl $returns = null,
         ?DirectChannel $directChannel = null,
         ?array $channels = null,
-        ?Referer $referer = null
+        ?Referer $referer = null,
+        ?Antifraud $antifraud = null
     ) {
         $this->amount = $amount;
         $this->currency = $currency;
@@ -54,6 +56,7 @@ class CreatePayment implements RequestInterface
         $this->channels = $channels;
         $this->channelType = $channelType;
         $this->referer = $referer;
+        $this->antifraud = $antifraud;
     }
 
     public function toArray(): array
@@ -107,6 +110,10 @@ class CreatePayment implements RequestInterface
 
         if (null !== $this->referer) {
             $data += $this->referer->toArray();
+        }
+
+        if (null !== $this->antifraud) {
+            $data += $this->antifraud->toArray();
         }
 
         return $data;

@@ -12,6 +12,7 @@ use Simpay\Exception\Unauthorized;
 use Simpay\Exception\Unknown;
 use Simpay\Exception\UnprocessableEntity;
 use Simpay\Model\Request\Amount;
+use Simpay\Model\Request\Antifraud;
 use Simpay\Model\Request\Billing;
 use Simpay\Model\Request\CallbackReturnUrl;
 use Simpay\Model\Request\CartItem;
@@ -69,7 +70,12 @@ try {
         Currency::createDefault(),
         new Description('Default description'),
         new Simpay\Model\Request\Control('Default control'),
-        new Customer('Default customer', 'jhondoe@example.com'),
+        new Customer(
+            'Default customer',
+            'jhondoe@example.com',
+            $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1', // ip — required when using DirectChannel
+            'PL',                                   // countryCode — required when using DirectChannel
+        ),
         new Billing(
             'billing name',
             'billing surname',
@@ -98,6 +104,10 @@ try {
         new DirectChannel('direct_channel'),
         [new Channel('channel_id')],
         new Referer('https://example.com'),
+        new Antifraud(
+            $_SERVER['HTTP_USER_AGENT'] ?? '', // useragent — required when using DirectChannel
+            76561198000000000,                 // steamid — optional
+        ),
     );
     $payment = $paymentApi->paymentTransactionCreate($serviceId, $createPayment);
     echo $payment->transactionId . PHP_EOL;

@@ -16,7 +16,7 @@ use Simpay\Model\Request\Filters;
 use Simpay\Model\Request\PaymentTransactionId;
 use Simpay\Model\Request\PhoneNumber;
 use Simpay\Model\Request\ServiceId;
-use Simpay\Model\Request\StreamId;
+use Simpay\Model\Request\SteamId;
 use Simpay\Model\Response\Pagination;
 
 final class DirectBillingTransactionApiTest extends BaseTestCase
@@ -108,7 +108,7 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
             new Control('96125f23d5494bfca845b781b5f1ad03'),
             new CallbackReturnUrl('https://www.simpay.pl/success', 'https://www.simpay.pl/failure',),
             new PhoneNumber('48123456789'),
-            new StreamId('test_id'),
+            new SteamId('test_id'),
         );
         $this->mockCreateDirectBillingTransaction($serviceId);
         $api = new DirectBillingTransactionApi($this->factory);
@@ -273,7 +273,7 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                             'success' => 'https://www.simpay.pl/success',
                             'failure' => 'https://www.simpay.pl/failure',
                         ],
-                        'stream_id' => 'test_id',
+                        'steamid' => 'test_id',
                     ],
                 ],
             )

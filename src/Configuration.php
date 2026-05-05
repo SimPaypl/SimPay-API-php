@@ -7,7 +7,7 @@ namespace Simpay;
 class Configuration
 {
     public const API_BASE_URI = 'https://api.simpay.pl';
-    public const VERSION = '2.1.1';
+    public const VERSION = '4.0.0';
 
     private string $apiKey;
     private string $apiPassword;

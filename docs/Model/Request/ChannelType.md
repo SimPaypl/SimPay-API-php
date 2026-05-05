@@ -20,15 +20,27 @@ This property indicates whether the channel supports card payments.
 
 #### `$ewallets` *(bool)*
 
-This property indicates whether the channel supports e-wallet payments.
+This property indicates whether the channel supports e-wallet payments (Google Pay, Apple Pay).
 
 #### `$paypal` *(bool)*
 
 This property indicates whether the channel supports PayPal.
 
+#### `$paysafe` *(bool)*
+
+This property indicates whether the channel supports Paysafe group payments (Skrill, PaysafeCard).
+
+#### `$latam` *(bool)*
+
+This property indicates whether the channel supports South American payments (PIX, Boleto, BoletoFlash).
+
+#### `$postponed` *(bool)*
+
+This property indicates whether the channel supports postponed payments.
+
 ### Methods
 
-#### `__construct(bool $blik = false, bool $transfer = false, bool $cards = false, bool $ewallets = false, bool $paypal = false)`
+#### `__construct(bool $blik = false, bool $transfer = false, bool $cards = false, bool $ewallets = false, bool $paypal = false, bool $paysafe = false, bool $latam = false, bool $postponed = false)`
 
 This method is used to create a new instance of the `ChannelType` class.
 
@@ -39,6 +51,9 @@ This method is used to create a new instance of the `ChannelType` class.
 - `$cards` *(bool)*: Indicates whether the channel supports card payments.
 - `$ewallets` *(bool)*: Indicates whether the channel supports e-wallet payments.
 - `$paypal` *(bool)*: Indicates whether the channel supports PayPal.
+- `$paysafe` *(bool)*: Indicates whether the channel supports Paysafe group payments (Skrill, PaysafeCard).
+- `$latam` *(bool)*: Indicates whether the channel supports South American payments (PIX, Boleto, BoletoFlash).
+- `$postponed` *(bool)*: Indicates whether the channel supports postponed payments.
 
 #### `toArray(): array`
 
@@ -46,4 +61,4 @@ This method is used to return an array representation of the `ChannelType` objec
 
 ##### Return Value
 
-- Returns an array with a single key `channel_types` and an array of all the channel type properties.
+- Returns an array with a single key `channelTypes` and an array of all the channel type properties.

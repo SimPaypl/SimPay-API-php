@@ -52,7 +52,7 @@ class Shipping implements RequestInterface
                 'flat' => $this->flat,
                 'city' => $this->city,
                 'region' => $this->region,
-                'postal_code' => $this->postalCode,
+                'postalCode' => $this->postalCode,
                 'country' => $this->country,
                 'company' => $this->company,
             ],

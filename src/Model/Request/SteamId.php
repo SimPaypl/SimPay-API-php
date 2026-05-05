@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Simpay\Model\Request;
 
-class StreamId implements RequestInterface
+class SteamId implements RequestInterface
 {
     private string $value;
 
@@ -16,7 +16,7 @@ class StreamId implements RequestInterface
     public function toArray(): array
     {
         return [
-            'stream_id' => $this->value,
+            'steamid' => $this->value,
         ];
     }
 }

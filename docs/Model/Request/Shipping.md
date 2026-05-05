@@ -32,7 +32,7 @@ This method returns an array with the shipping information, with the keys:
 - `flat`
 - `city`
 - `region`
-- `postal_code`
+- `postalCode`
 - `country`
 - `company`
 
@@ -70,7 +70,7 @@ var_dump($shipping->toArray());
 //     string(8) "New York"
 //     ["region"]=>
 //     string(2) "NY"
-//     ["postal_code"]=>
+//     ["postalCode"]=>
 //     string(5) "10001"
 //     ["country"]=>
 //     string(2) "US"

@@ -11,7 +11,7 @@ class DirectBillingTransaction implements RequestInterface
     private ?Description $description;
     private ?Control $control;
     private ?PhoneNumber $phoneNumber;
-    private ?StreamId $steamId;
+    private ?SteamId $steamId;
     private ?CallbackReturnUrl $returns;
 
     public function __construct(
@@ -21,7 +21,7 @@ class DirectBillingTransaction implements RequestInterface
         ?Control $control = null,
         ?CallbackReturnUrl $returns = null,
         ?PhoneNumber $phoneNumber = null,
-        ?StreamId $steamId = null
+        ?SteamId $steamId = null
     ) {
         $this->amount = $amount;
         $this->amountType = $amountType;
