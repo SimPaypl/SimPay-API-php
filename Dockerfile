@@ -1,4 +1,6 @@
-FROM devilbox/php-fpm-7.4:latest as cli
+# syntax=docker/dockerfile:1
+
+FROM devilbox/php-fpm-7.4:latest AS cli
 
 RUN sed -e 's/max_execution_time = 30/max_execution_time = 100/' -i  /usr/local/etc/php/docker-php.ini
 
@@ -12,7 +14,14 @@ ENV COMPOSER_MEMORY_LIMIT=-1
 ENV COMPOSER_ALLOW_SUPERUSER=1
 
 FROM cli
-COPY . /app/
 WORKDIR /app/
 
-RUN composer install --optimize-autoloader --classmap-authoritative --no-interaction --prefer-dist --no-progress
+# Install dependencies from manifests only (layer cached across source changes);
+# autoloader is generated after sources are copied
+COPY composer.json composer.lock /app/
+RUN --mount=type=cache,target=/root/.composer/cache \
+    composer install --no-scripts --no-autoloader --no-interaction --prefer-dist --no-progress
+
+COPY . /app/
+
+RUN composer dump-autoload --optimize --classmap-authoritative --no-interaction

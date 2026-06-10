@@ -1,0 +1,22 @@
+# VCS / CI
+.git/
+.gitignore
+.github/
+.travis.yml
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yaml
+
+# Dependencies (installed in image by composer)
+vendor/
+
+# Test / analysis artifacts
+build/
+.phpunit.result.cache
+
+# Docs
+docs/
+README.md
+LICENSE
