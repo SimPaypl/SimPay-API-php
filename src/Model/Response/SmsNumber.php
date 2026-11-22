@@ -24,6 +24,6 @@ class SmsNumber
 
     public static function createFromResponse(array $data): self
     {
-        return new self(new ServiceNumber($data['number']), $data['value'], $data['value_gross'], $data['adult']);
+        return new self(new ServiceNumber($data['number']), (float) $data['value'], (float) $data['value_gross'], $data['adult']);
     }
 }
