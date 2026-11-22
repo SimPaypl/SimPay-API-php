@@ -31,7 +31,7 @@ final class SmsServiceApiTest extends BaseTestCase
         $this->assertSame('TEST', $smsServiceResponse->data[0]->name);
         $this->assertSame('SIM', $smsServiceResponse->data[0]->prefix);
         $this->assertSame('TESTSIMPAY', $smsServiceResponse->data[0]->suffix);
-        $this->assertSame('Test', $smsServiceResponse->data[0]->description);
+        $this->assertNull($smsServiceResponse->data[0]->description);
         $this->assertSame('ONE_TIME_CODE', $smsServiceResponse->data[0]->type->value);
         $this->assertSame($serviceStatus, $smsServiceResponse->data[0]->status->value);
         $this->assertSame('2021-01-01 00:00:00', $smsServiceResponse->data[0]->createdAt->format('Y-m-d H:i:s'));
@@ -140,7 +140,6 @@ final class SmsServiceApiTest extends BaseTestCase
                             'name' => 'TEST',
                             'prefix' => 'SIM',
                             'suffix' => 'TESTSIMPAY',
-                            'description' => 'Test',
                             'adult' => false,
                             'created_at' => '2021-01-01 00:00:00',
                         ],
@@ -219,7 +218,7 @@ final class SmsServiceApiTest extends BaseTestCase
                         'used' => false,
                         'code' => $smsCode,
                         'test' => true,
-                        'from' => $phoneNumber,
+                        'from' => (string) $phoneNumber,
                         'number' => $serviceNumber,
                         'value' => 0.25,
                     ],
@@ -253,7 +252,7 @@ final class SmsServiceApiTest extends BaseTestCase
                         'used' => true,
                         'code' => $smsCode,
                         'test' => true,
-                        'from' => $phoneNumber,
+                        'from' => (string) $phoneNumber,
                         'number' => $serviceNumber,
                         'value' => 0.25,
                         'used_at' => $usedAt,

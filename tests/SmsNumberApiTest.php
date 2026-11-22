@@ -21,8 +21,8 @@ final class SmsNumberApiTest extends BaseTestCase
         $serviceId = 'd151e4f9';
         $number = ServiceNumber::SERVICE_NUMBER_7055;
         $value = 42.10;
-        $valueNet = 34.30;
-        $this->mockSmsNumbersListResponse($serviceId, $number, $value, $valueNet);
+        $valueGross = 51.78;
+        $this->mockSmsNumbersListResponse($serviceId, $number, $value, $valueGross);
         $smsNumbersApi = new SmsNumberApi($this->factory);
 
         //WHEN
@@ -31,7 +31,8 @@ final class SmsNumberApiTest extends BaseTestCase
         //THEN
         $this->assertSame($number, $smsNumbersResponse->data[0]->number->value);
         $this->assertSame($value, $smsNumbersResponse->data[0]->value);
-        $this->assertSame($valueNet, $smsNumbersResponse->data[0]->valueNet);
+        $this->assertSame($value, $smsNumbersResponse->data[0]->valueNet);
+        $this->assertSame($valueGross, $smsNumbersResponse->data[0]->valueGross);
         $this->assertFalse($smsNumbersResponse->data[0]->adult);
 
         $this->assertPagination($smsNumbersResponse->pagination);
@@ -46,8 +47,8 @@ final class SmsNumberApiTest extends BaseTestCase
         $serviceId = 'd151e4f9';
         $number = 7055;
         $value = 42.10;
-        $valueNet = 34.30;
-        $this->mockSmsServiceNumberResponse($serviceId, $number, $value, $valueNet);
+        $valueGross = 51.78;
+        $this->mockSmsServiceNumberResponse($serviceId, $number, $value, $valueGross);
         $smsNumbersApi = new SmsNumberApi($this->factory);
 
         //WHEN
@@ -56,7 +57,8 @@ final class SmsNumberApiTest extends BaseTestCase
         //THEN
         $this->assertSame($number, $smsNumber->number->value);
         $this->assertSame($value, $smsNumber->value);
-        $this->assertSame($valueNet, $smsNumber->valueNet);
+        $this->assertSame($value, $smsNumber->valueNet);
+        $this->assertSame($valueGross, $smsNumber->valueGross);
         $this->assertFalse($smsNumber->adult);
     }
 
@@ -68,8 +70,8 @@ final class SmsNumberApiTest extends BaseTestCase
         //GIVEN
         $number = 7055;
         $value = 42.10;
-        $valueNet = 34.30;
-        $this->mockSmsNumbersResponse($number, $value, $valueNet);
+        $valueGross = 51.78;
+        $this->mockSmsNumbersResponse($number, $value, $valueGross);
         $smsNumbersApi = new SmsNumberApi($this->factory);
 
         //WHEN
@@ -78,7 +80,8 @@ final class SmsNumberApiTest extends BaseTestCase
         //THEN
         $this->assertSame($number, $smsNumbersResponse->data[0]->number->value);
         $this->assertSame($value, $smsNumbersResponse->data[0]->value);
-        $this->assertSame($valueNet, $smsNumbersResponse->data[0]->valueNet);
+        $this->assertSame($value, $smsNumbersResponse->data[0]->valueNet);
+        $this->assertSame($valueGross, $smsNumbersResponse->data[0]->valueGross);
         $this->assertFalse($smsNumbersResponse->data[0]->adult);
 
         $this->assertPagination($smsNumbersResponse->pagination);
@@ -92,8 +95,8 @@ final class SmsNumberApiTest extends BaseTestCase
         //GIVEN
         $number = 7055;
         $value = 42.10;
-        $valueNet = 34.30;
-        $this->mockSmsNumberResponse($number, $value, $valueNet);
+        $valueGross = 51.78;
+        $this->mockSmsNumberResponse($number, $value, $valueGross);
         $smsNumbersApi = new SmsNumberApi($this->factory);
 
         //WHEN
@@ -102,11 +105,12 @@ final class SmsNumberApiTest extends BaseTestCase
         //THEN
         $this->assertSame($number, $smsNumber->number->value);
         $this->assertSame($value, $smsNumber->value);
-        $this->assertSame($valueNet, $smsNumber->valueNet);
+        $this->assertSame($value, $smsNumber->valueNet);
+        $this->assertSame($valueGross, $smsNumber->valueGross);
         $this->assertFalse($smsNumber->adult);
     }
 
-    private function mockSmsNumbersListResponse(string $serviceId, int $number, float $value, float $valueNet): void
+    private function mockSmsNumbersListResponse(string $serviceId, int $number, float $value, float $valueGross): void
     {
         $this->client->expects($this->once())
             ->method('request')
@@ -118,7 +122,7 @@ final class SmsNumberApiTest extends BaseTestCase
                         [
                             'number' => $number,
                             'value' => $value,
-                            'value_net' => $valueNet,
+                            'value_gross' => $valueGross,
                             'adult' => false,
                         ],
                     ],
@@ -152,7 +156,7 @@ final class SmsNumberApiTest extends BaseTestCase
         string $serviceId,
         int $number,
         float $value,
-        float $valueNet
+        float $valueGross
     ): void {
         $this->client->expects($this->once())
             ->method('request')
@@ -163,14 +167,14 @@ final class SmsNumberApiTest extends BaseTestCase
                     'data' => [
                         'number' => $number,
                         'value' => $value,
-                        'value_net' => $valueNet,
+                        'value_gross' => $valueGross,
                         'adult' => false,
                     ],
                 ],
             ));
     }
 
-    private function mockSmsNumbersResponse(int $number, float $value, float $valueNet): void
+    private function mockSmsNumbersResponse(int $number, float $value, float $valueGross): void
     {
         $this->client->expects($this->once())
             ->method('request')
@@ -182,7 +186,7 @@ final class SmsNumberApiTest extends BaseTestCase
                         [
                             'number' => $number,
                             'value' => $value,
-                            'value_net' => $valueNet,
+                            'value_gross' => $valueGross,
                             'adult' => false,
                         ],
                     ],
@@ -201,7 +205,7 @@ final class SmsNumberApiTest extends BaseTestCase
             ));
     }
 
-    private function mockSmsNumberResponse(int $number, float $value, float $valueNet): void
+    private function mockSmsNumberResponse(int $number, float $value, float $valueGross): void
     {
         $this->client->expects($this->once())
             ->method('request')
@@ -212,7 +216,7 @@ final class SmsNumberApiTest extends BaseTestCase
                     'data' => [
                         'number' => $number,
                         'value' => $value,
-                        'value_net' => $valueNet,
+                        'value_gross' => $valueGross,
                         'adult' => false,
                     ],
                 ],
