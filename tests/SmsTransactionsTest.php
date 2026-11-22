@@ -34,7 +34,8 @@ final class SmsTransactionsTest extends BaseTestCase
         $this->assertSame($phoneNumber, $response->data[0]->from);
         $this->assertSame($smsCode, $response->data[0]->code);
         $this->assertFalse($response->data[0]->used);
-        $this->assertSame($serviceNumber, $response->data[0]->sendNumber->value);
+        $this->assertNull($response->data[0]->sendNumber);
+        $this->assertNull($response->data[0]->value);
 
         $this->assertPagination($response->pagination);
     }
@@ -84,8 +85,6 @@ final class SmsTransactionsTest extends BaseTestCase
                             'from' => $phoneNumber,
                             'code' => $smsCode,
                             'used' => false,
-                            'send_number' => $serviceNumber,
-                            'value' => 0.25,
                             'send_at' => '2021-01-01 00:00:00',
                         ],
                     ],

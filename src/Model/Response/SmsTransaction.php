@@ -8,19 +8,21 @@ class SmsTransaction
 {
     public int $id;
     public int $from;
-    public string $code;
+    public ?string $code;
     public bool $used;
-    public ServiceNumber $sendNumber;
-    public float $value;
+    /** Only set by smsTransaction(), the list does not include it. */
+    public ?ServiceNumber $sendNumber;
+    /** Only set by smsTransaction(), the list does not include it. */
+    public ?float $value;
     public \DateTimeImmutable $sendAt;
 
     private function __construct(
         int $id,
         int $from,
-        string $code,
+        ?string $code,
         bool $used,
-        ServiceNumber $sendNumber,
-        float $value,
+        ?ServiceNumber $sendNumber,
+        ?float $value,
         \DateTimeImmutable $sendAt
     ) {
         $this->id = $id;
@@ -37,10 +39,10 @@ class SmsTransaction
         return new self(
             $data['id'],
             $data['from'],
-            $data['code'],
+            $data['code'] ?? null,
             $data['used'],
-            new ServiceNumber($data['send_number']),
-            $data['value'],
+            isset($data['send_number']) ? new ServiceNumber($data['send_number']) : null,
+            isset($data['value']) ? (float) $data['value'] : null,
             new \DateTimeImmutable($data['send_at']),
         );
     }

@@ -47,7 +47,7 @@ class SmsService
             $data['name'],
             $data['prefix'],
             $data['suffix'],
-            $data['description'],
+            $data['description'] ?? null,
             $data['adult'],
             new \DateTimeImmutable($data['created_at']),
         );

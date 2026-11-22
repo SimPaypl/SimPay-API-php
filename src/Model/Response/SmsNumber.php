@@ -8,19 +8,22 @@ class SmsNumber
 {
     public ServiceNumber $number;
     public float $value;
+    /** Net value, the same as $value. */
     public float $valueNet;
+    public float $valueGross;
     public bool $adult;
 
-    private function __construct(ServiceNumber $number, float $value, float $valueNet, bool $adult)
+    private function __construct(ServiceNumber $number, float $value, float $valueGross, bool $adult)
     {
         $this->number = $number;
         $this->value = $value;
-        $this->valueNet = $valueNet;
+        $this->valueNet = $value;
+        $this->valueGross = $valueGross;
         $this->adult = $adult;
     }
 
     public static function createFromResponse(array $data): self
     {
-        return new self(new ServiceNumber($data['number']), $data['value'], $data['value_net'], $data['adult']);
+        return new self(new ServiceNumber($data['number']), $data['value'], $data['value_gross'], $data['adult']);
     }
 }

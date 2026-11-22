@@ -37,7 +37,7 @@ class SmsServiceCheckCodeData
             $data['used'],
             $data['code'],
             $data['test'],
-            $data['from'],
+            (int) $data['from'],
             new ServiceNumber($data['number']),
             $data['value'],
             isset($data['used_at']) ? new \DateTimeImmutable($data['used_at']) : null,
