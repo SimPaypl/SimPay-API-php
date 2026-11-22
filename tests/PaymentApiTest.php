@@ -72,6 +72,10 @@ final class PaymentApiTest extends BaseTestCase
         $this->assertSame('test', $response->data[0]->control);
         $this->assertSame('test', $response->data[0]->channel);
         $this->assertSame('2021-11-08T18:19:16+01:00', $response->data[0]->paidAt->format(\DateTimeInterface::ATOM));
+        $this->assertNull($response->data[1]->paidAt);
+        $this->assertNull($response->data[1]->control);
+        $this->assertNull($response->data[1]->channel);
+        $this->assertSame(5.0, $response->data[1]->amount);
         $this->assertSame('2021-11-08T18:19:16+01:00', $response->data[0]->createdAt->format(\DateTimeInterface::ATOM));
         $this->assertSame('2021-11-08T18:19:16+01:00', $response->data[0]->updatedAt->format(\DateTimeInterface::ATOM));
 
@@ -248,6 +252,16 @@ final class PaymentApiTest extends BaseTestCase
                             'created_at' => '2021-11-08T18:19:16+01:00',
                             'updated_at' => '2021-11-08T18:19:16+01:00',
                         ],
+                        [
+                            'id' => 'e262f5a0',
+                            'status' => 'transaction_new',
+                            'amount' => 5,
+                            'control' => null,
+                            'channel' => null,
+                            'paid_at' => null,
+                            'created_at' => '2021-11-08T18:19:16+01:00',
+                            'updated_at' => '2021-11-08T18:19:16+01:00',
+                        ],
                     ],
                     'pagination' => [
                         'total' => 1,
@@ -398,7 +412,7 @@ final class PaymentApiTest extends BaseTestCase
                         'amount' => [
                             'value' => 19.99,
                             'currency' => 'PLN',
-                            'commission' => 0.98,
+                            'commission' => '0.98',
                         ],
                         'channel' => 'nest',
                         'control' => 'test_control',

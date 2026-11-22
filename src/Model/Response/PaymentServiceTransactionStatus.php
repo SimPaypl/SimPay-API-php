@@ -10,8 +10,12 @@ class PaymentServiceTransactionStatus
     public const CONFIRMED = 'transaction_confirmed';
     public const GENERATED = 'transaction_generated';
     public const PAID = 'transaction_paid';
-    public const FAILED = 'transaction_failed';
+    public const FAILED = 'transaction_failure';
     public const EXPIRED = 'transaction_expired';
+    public const REFUNDED = 'transaction_refunded';
+    public const FRAUD = 'transaction_fraud';
+    public const FRAUD_POSSIBILITY = 'transaction_fraud_possibility';
+    /** @deprecated The API never returns this status. */
     public const CANCELED = 'transaction_canceled';
 
     public string $value;
