@@ -164,7 +164,7 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                             'id' => 'dc261d4f-31ef-4728-bfd6-97bbe2a5ef0a',
                             'status' => 'transaction_db_payed',
                             'value' => 0.34,
-                            'value_netto' => 0.24,
+                            'value_net' => 0.24,
                             'operator' => 'test_operator',
                             'created_at' => '2023-02-16T14:52:11+01:00',
                             'updated_at' => '2023-02-16T14:52:11+01:00',
@@ -196,7 +196,7 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                     'query' => [
                         'filter' => [
                             'status' => 'transaction_db_new',
-                            'phone_number' => '48123456789',
+                            'phoneNumber' => '48123456789',
                             'control' => 'test_control',
                         ],
                     ],
@@ -210,7 +210,7 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                             'id' => 'dc261d4f-31ef-4728-bfd6-97bbe2a5ef0a',
                             'status' => 'transaction_db_new',
                             'value' => 0.34,
-                            'value_netto' => 0.24,
+                            'value_net' => 0.24,
                             'operator' => 'test_operator',
                             'created_at' => '2023-02-16T14:52:11+01:00',
                             'updated_at' => '2023-02-16T14:52:11+01:00',
@@ -248,11 +248,59 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                 [
                     'success' => true,
                     'data' => [
-                        'transaction_id' => '1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
-                        'redirect_url' => 'https://db.simpay.pl/1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
+                        'transactionId' => '1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
+                        'redirectUrl' => 'https://db.simpay.pl/1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
                     ],
                 ],
             ));
+    }
+
+    /**
+     * @test
+     */
+    public function should_return_new_direct_billing_transaction_with_empty_fields(): void
+    {
+        //GIVEN
+        $serviceId = 'd151e4f9';
+        $transactionId = '4c6aa6ba-4518-473c-a30f-1376138e699c';
+        $this->client->expects($this->once())
+            ->method('request')
+            ->with('GET', \sprintf('directbilling/%s/transactions/%s', $serviceId, $transactionId),)
+            ->willReturn($this->mockResponse(
+                [
+                    'success' => true,
+                    'data' => [
+                        'id' => $transactionId,
+                        'status' => 'transaction_db_new',
+                        'phoneNumber' => null,
+                        'control' => null,
+                        'value' => 0,
+                        'value_net' => 0,
+                        'value_created' => 5.34,
+                        'value_created_type' => 'NET',
+                        'operator' => null,
+                        'notify' => [
+                            'is_send' => false,
+                            'last_send_at' => '1970-01-01T01:00:00+01:00',
+                            'count' => null,
+                        ],
+                        'score' => null,
+                        'created_at' => '2023-02-16T14:52:11+01:00',
+                        'updated_at' => null,
+                    ],
+                ],
+            ));
+        $api = new DirectBillingTransactionApi($this->factory);
+
+        //WHEN
+        $response = $api->directBillingTransaction(new ServiceId($serviceId), new PaymentTransactionId($transactionId));
+
+        //THEN
+        $this->assertSame('transaction_db_new', $response->status);
+        $this->assertNull($response->phoneNumber);
+        $this->assertNull($response->operator);
+        $this->assertNull($response->notify->count);
+        $this->assertNull($response->updatedAt);
     }
 
     private function mockCreateDirectBillingTransaction(string $serviceId): void
@@ -265,10 +313,10 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                 [
                     'json' => [
                         'amount' => 19.99,
-                        'amount_type' => 'required',
+                        'amountType' => 'required',
                         'description' => 'test description',
                         'control' => '96125f23d5494bfca845b781b5f1ad03',
-                        'phone_number' => '48123456789',
+                        'phoneNumber' => '48123456789',
                         'returns' => [
                             'success' => 'https://www.simpay.pl/success',
                             'failure' => 'https://www.simpay.pl/failure',
@@ -281,8 +329,8 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                 [
                     'success' => true,
                     'data' => [
-                        'transaction_id' => '1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
-                        'redirect_url' => 'https://db.simpay.pl/1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
+                        'transactionId' => '1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
+                        'redirectUrl' => 'https://db.simpay.pl/1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
                     ],
                 ],
             ));
@@ -299,10 +347,10 @@ final class DirectBillingTransactionApiTest extends BaseTestCase
                     'data' => [
                         'id' => $transactionId,
                         'status' => 'transaction_db_payed',
-                        'phone_number' => null,
+                        'phoneNumber' => null,
                         'control' => '1d87a1b3-18f8-4146-bcb1-c0c9f293b04f',
                         'value' => 16.67,
-                        'value_netto' => 10,
+                        'value_net' => 10,
                         'operator' => 't-mobile',
                         'notify' => [
                             'is_send' => false,

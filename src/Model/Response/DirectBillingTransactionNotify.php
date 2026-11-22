@@ -8,9 +8,9 @@ class DirectBillingTransactionNotify
 {
     public bool $isSend;
     public \DateTimeImmutable $lastSendAt;
-    public int $count;
+    public ?int $count;
 
-    private function __construct(bool $isSend, \DateTimeImmutable $lastSendAt, int $count)
+    private function __construct(bool $isSend, \DateTimeImmutable $lastSendAt, ?int $count)
     {
         $this->isSend = $isSend;
         $this->lastSendAt = $lastSendAt;
@@ -19,6 +19,6 @@ class DirectBillingTransactionNotify
 
     public static function createFromResponse(array $data): self
     {
-        return new self($data['is_send'], new \DateTimeImmutable($data['last_send_at']), $data['count'],);
+        return new self($data['is_send'], new \DateTimeImmutable($data['last_send_at']), $data['count'] ?? null,);
     }
 }

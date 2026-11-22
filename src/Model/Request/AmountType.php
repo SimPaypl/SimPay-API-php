@@ -37,7 +37,7 @@ class AmountType implements RequestInterface
     public function toArray(): array
     {
         return [
-            'amount_type' => $this->value,
+            'amountType' => $this->value,
         ];
     }
 }

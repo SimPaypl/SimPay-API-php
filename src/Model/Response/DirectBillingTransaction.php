@@ -15,7 +15,7 @@ class DirectBillingTransaction
     public ?Operator $operator;
     public DirectBillingTransactionNotify $notify;
     public \DateTimeImmutable $createdAt;
-    public \DateTimeImmutable $updatedAt;
+    public ?\DateTimeImmutable $updatedAt;
 
     private function __construct(
         string $id,
@@ -27,7 +27,7 @@ class DirectBillingTransaction
         ?Operator $operator,
         DirectBillingTransactionNotify $notify,
         \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt
+        ?\DateTimeImmutable $updatedAt
     ) {
         $this->id = $id;
         $this->status = $status;
@@ -46,14 +46,14 @@ class DirectBillingTransaction
         return new self(
             $data['id'],
             $data['status'],
-            $data['phone_number'],
-            $data['control'],
+            $data['phoneNumber'] ?? null,
+            $data['control'] ?? null,
             $data['value'],
-            $data['value_netto'],
-            new Operator($data['operator']),
+            $data['value_net'],
+            null !== ($data['operator'] ?? null) ? new Operator($data['operator']) : null,
             DirectBillingTransactionNotify::createFromResponse($data['notify']),
             new \DateTimeImmutable($data['created_at']),
-            new \DateTimeImmutable($data['updated_at']),
+            null !== ($data['updated_at'] ?? null) ? new \DateTimeImmutable($data['updated_at']) : null,
         );
     }
 }
