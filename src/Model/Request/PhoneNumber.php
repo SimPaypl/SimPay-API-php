@@ -20,7 +20,7 @@ class PhoneNumber implements RequestInterface
     public function toArray(): array
     {
         return [
-            'phone_number' => $this->value,
+            'phoneNumber' => $this->value,
         ];
     }
 }

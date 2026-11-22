@@ -10,18 +10,18 @@ class DirectBillingTransactionList
     public string $status;
     public float $value;
     public float $valueNetto;
-    public string $operator;
+    public ?string $operator;
     public \DateTimeImmutable $createdAt;
-    public \DateTimeImmutable $updatedAt;
+    public ?\DateTimeImmutable $updatedAt;
 
     private function __construct(
         string $id,
         string $status,
         float $value,
         float $valueNetto,
-        string $operator,
+        ?string $operator,
         \DateTimeImmutable $createdAt,
-        \DateTimeImmutable $updatedAt
+        ?\DateTimeImmutable $updatedAt
     ) {
         $this->id = $id;
         $this->status = $status;
@@ -38,10 +38,10 @@ class DirectBillingTransactionList
             $data['id'],
             $data['status'],
             $data['value'],
-            $data['value_netto'],
-            $data['operator'],
+            $data['value_net'],
+            $data['operator'] ?? null,
             new \DateTimeImmutable($data['created_at']),
-            new \DateTimeImmutable($data['updated_at']),
+            null !== ($data['updated_at'] ?? null) ? new \DateTimeImmutable($data['updated_at']) : null,
         );
     }
 }
