@@ -220,7 +220,7 @@ final class SmsServiceApiTest extends BaseTestCase
                         'test' => true,
                         'from' => (string) $phoneNumber,
                         'number' => $serviceNumber,
-                        'value' => 0.25,
+                        'value' => '0.25',
                     ],
                 ],
             ));
@@ -254,7 +254,7 @@ final class SmsServiceApiTest extends BaseTestCase
                         'test' => true,
                         'from' => (string) $phoneNumber,
                         'number' => $serviceNumber,
-                        'value' => 0.25,
+                        'value' => '0.25',
                         'used_at' => $usedAt,
                     ],
                 ],

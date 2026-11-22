@@ -121,7 +121,7 @@ final class SmsNumberApiTest extends BaseTestCase
                     'data' => [
                         [
                             'number' => $number,
-                            'value' => $value,
+                            'value' => number_format($value, 2, '.', ''),
                             'value_gross' => $valueGross,
                             'adult' => false,
                         ],
@@ -166,7 +166,7 @@ final class SmsNumberApiTest extends BaseTestCase
                     'status' => 'success',
                     'data' => [
                         'number' => $number,
-                        'value' => $value,
+                        'value' => number_format($value, 2, '.', ''),
                         'value_gross' => $valueGross,
                         'adult' => false,
                     ],
@@ -185,7 +185,7 @@ final class SmsNumberApiTest extends BaseTestCase
                     'data' => [
                         [
                             'number' => $number,
-                            'value' => $value,
+                            'value' => number_format($value, 2, '.', ''),
                             'value_gross' => $valueGross,
                             'adult' => false,
                         ],
@@ -215,7 +215,7 @@ final class SmsNumberApiTest extends BaseTestCase
                     'status' => 'success',
                     'data' => [
                         'number' => $number,
-                        'value' => $value,
+                        'value' => number_format($value, 2, '.', ''),
                         'value_gross' => $valueGross,
                         'adult' => false,
                     ],

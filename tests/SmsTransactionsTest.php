@@ -133,7 +133,7 @@ final class SmsTransactionsTest extends BaseTestCase
                         'code' => $smsCode,
                         'used' => false,
                         'send_number' => $serviceNumber,
-                        'value' => 0.25,
+                        'value' => '0.25',
                         'send_at' => '2021-01-01 00:00:00',
                     ],
                 ],
