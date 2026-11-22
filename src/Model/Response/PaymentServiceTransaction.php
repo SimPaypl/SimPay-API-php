@@ -9,9 +9,9 @@ class PaymentServiceTransaction
     public string $id;
     public PaymentServiceTransactionStatus $status;
     public float $amount;
-    public string $control;
-    public string $channel;
-    public \DateTimeImmutable $paidAt;
+    public ?string $control;
+    public ?string $channel;
+    public ?\DateTimeImmutable $paidAt;
     public \DateTimeImmutable $createdAt;
     public \DateTimeImmutable $updatedAt;
 
@@ -19,9 +19,9 @@ class PaymentServiceTransaction
         string $id,
         PaymentServiceTransactionStatus $status,
         float $amount,
-        string $control,
-        string $channel,
-        \DateTimeImmutable $paidAt,
+        ?string $control,
+        ?string $channel,
+        ?\DateTimeImmutable $paidAt,
         \DateTimeImmutable $createdAt,
         \DateTimeImmutable $updatedAt
     ) {
@@ -40,10 +40,10 @@ class PaymentServiceTransaction
         return new self(
             $data['id'],
             new PaymentServiceTransactionStatus($data['status']),
-            $data['amount'],
-            $data['control'],
-            $data['channel'],
-            new \DateTimeImmutable($data['paid_at']),
+            (float) $data['amount'],
+            $data['control'] ?? null,
+            $data['channel'] ?? null,
+            empty($data['paid_at']) ? null : new \DateTimeImmutable($data['paid_at']),
             new \DateTimeImmutable($data['created_at']),
             new \DateTimeImmutable($data['updated_at']),
         );

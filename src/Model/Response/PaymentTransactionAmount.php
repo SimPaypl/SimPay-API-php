@@ -19,6 +19,6 @@ class PaymentTransactionAmount
 
     public static function createFromResponse(array $data): self
     {
-        return new self($data['value'], $data['currency'], $data['commission']);
+        return new self((float) $data['value'], $data['currency'], (float) $data['commission']);
     }
 }
